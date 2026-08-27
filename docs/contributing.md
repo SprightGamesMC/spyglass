@@ -144,6 +144,8 @@ Adding a field to the JSON report is minor and does not change `schema_version`.
 
 Release: move `Unreleased` to a version heading with the date, set the same version in `package.json` and `Main.TOOL_VERSION`, commit as `CHANGE | Release 1.2.0`, tag `v1.2.0`, push the tag. The publish workflow runs `lint` and `test` and publishes to npm with provenance.
 
+The workflow authenticates with npm trusted publishing. GitHub Actions proves the run came from this repository and this workflow file, and npm returns a short lived credential. There is no npm token in the repository secrets, and the workflow file name is part of the trust record, so renaming `publish.yml` breaks publishing until the record is updated with `npm trust github`.
+
 Dependency updates come as grouped monthly pull requests. Only development dependencies exist. Merge when CI passes.
 
 ## Commits
