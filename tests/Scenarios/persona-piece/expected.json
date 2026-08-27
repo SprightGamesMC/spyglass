@@ -1,0 +1,50 @@
+{
+  "exit_code": 1,
+  "content_type": "persona",
+  "layout": "standard",
+  "passed": false,
+  "counts": {
+    "error": 3,
+    "warning": 1,
+    "recommendation": 0
+  },
+  "findings": [
+    {
+      "id": "PERSONA/105",
+      "slug": "geometry-variant-missing",
+      "severity": "error",
+      "path": "sample_hat.meta.json",
+      "pack": "",
+      "location": {
+        "field": "geometry_sources"
+      }
+    },
+    {
+      "id": "PERSONA/105",
+      "slug": "geometry-variant-missing",
+      "severity": "error",
+      "path": "sample_hat.meta.json",
+      "pack": "",
+      "location": {
+        "field": "geometry_sources"
+      }
+    },
+    {
+      "id": "PERSONA/209",
+      "slug": "head-texture-size-invalid",
+      "severity": "error",
+      "path": "sample_hat_head.png",
+      "pack": "",
+      "location": {
+        "field": "texture_sources[1].texture"
+      }
+    },
+    {
+      "id": "PERSONA/304",
+      "slug": "geometry-unreferenced",
+      "severity": "warning",
+      "path": "sample_hat.geometry.json",
+      "pack": ""
+    }
+  ]
+}

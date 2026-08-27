@@ -1,0 +1,184 @@
+{
+  "exit_code": 1,
+  "content_type": "addon",
+  "layout": "standard",
+  "passed": false,
+  "counts": {
+    "error": 10,
+    "warning": 6,
+    "recommendation": 4
+  },
+  "findings": [
+    {
+      "id": "ADDON/201",
+      "slug": "file-directly-in-type-folder",
+      "severity": "error",
+      "path": "behavior_packs/sample_bp/functions/hello.mcfunction",
+      "pack": "behavior_packs/sample_bp"
+    },
+    {
+      "id": "ADDON/203",
+      "slug": "creator-folder-name-generic",
+      "severity": "error",
+      "path": "resource_packs/sample_rp/textures/entity",
+      "pack": "resource_packs/sample_rp"
+    },
+    {
+      "id": "ADDON/207",
+      "slug": "definition-identifier-not-namespaced",
+      "severity": "error",
+      "path": "behavior_packs/sample_bp/entities/old.json",
+      "pack": "behavior_packs/sample_bp",
+      "location": {
+        "field": "minecraft:entity.description.identifier"
+      }
+    },
+    {
+      "id": "ADDON/209",
+      "slug": "resource-pack-scope-missing",
+      "severity": "error",
+      "path": "resource_packs/sample_rp/manifest.json",
+      "pack": "resource_packs/sample_rp",
+      "location": {
+        "field": "header.pack_scope"
+      }
+    },
+    {
+      "id": "ADDON/210",
+      "slug": "catalog-key-not-namespaced",
+      "severity": "error",
+      "path": "resource_packs/sample_rp/sounds/sound_definitions.json",
+      "pack": "resource_packs/sample_rp",
+      "location": {
+        "field": "sound_definitions.sample_pack.crab.click"
+      }
+    },
+    {
+      "id": "ADDON/211",
+      "slug": "path-not-namespaced",
+      "severity": "error",
+      "path": "resource_packs/sample_rp/textures/entity",
+      "pack": "resource_packs/sample_rp"
+    },
+    {
+      "id": "ADDON/703",
+      "slug": "world-impacting-command",
+      "severity": "warning",
+      "path": "behavior_packs/sample_bp/functions/hello.mcfunction",
+      "pack": "behavior_packs/sample_bp",
+      "location": {
+        "line": 3
+      }
+    },
+    {
+      "id": "DEFINITION/501",
+      "slug": "format-version-below-expected",
+      "severity": "recommendation",
+      "path": "behavior_packs/sample_bp/entities/old.json",
+      "pack": "behavior_packs/sample_bp",
+      "location": {
+        "field": "format_version"
+      }
+    },
+    {
+      "id": "DEFINITION/501",
+      "slug": "format-version-below-expected",
+      "severity": "recommendation",
+      "path": "resource_packs/sample_rp/animations/crab.animation.json",
+      "pack": "resource_packs/sample_rp",
+      "location": {
+        "field": "format_version"
+      }
+    },
+    {
+      "id": "FILE/201",
+      "slug": "json-invalid",
+      "severity": "error",
+      "path": "behavior_packs/sample_bp/entities/invalid.json"
+    },
+    {
+      "id": "FILE/205",
+      "slug": "path-has-uppercase",
+      "severity": "recommendation",
+      "path": "resource_packs/sample_rp/textures/entity/sample_pack/UpperCase.png",
+      "pack": "resource_packs/sample_rp"
+    },
+    {
+      "id": "LANG/103",
+      "slug": "lang-file-missing",
+      "severity": "error",
+      "path": "resource_packs/sample_rp/texts/languages.json",
+      "pack": "resource_packs/sample_rp"
+    },
+    {
+      "id": "LANG/104",
+      "slug": "definition-name-key-missing",
+      "severity": "warning",
+      "path": "behavior_packs/sample_bp/entities/crab.json",
+      "pack": "behavior_packs/sample_bp",
+      "location": {
+        "field": "description.identifier"
+      }
+    },
+    {
+      "id": "LANG/104",
+      "slug": "definition-name-key-missing",
+      "severity": "warning",
+      "path": "behavior_packs/sample_bp/entities/crab.json",
+      "pack": "behavior_packs/sample_bp",
+      "location": {
+        "field": "description.identifier"
+      }
+    },
+    {
+      "id": "PACK/204",
+      "slug": "file-outside-pack",
+      "severity": "error",
+      "path": "notes.txt"
+    },
+    {
+      "id": "PACK/301",
+      "slug": "asset-unused",
+      "severity": "warning",
+      "path": "resource_packs/sample_rp/textures/entity/sample_pack/unused.png",
+      "pack": "resource_packs/sample_rp"
+    },
+    {
+      "id": "PACK/301",
+      "slug": "asset-unused",
+      "severity": "warning",
+      "path": "resource_packs/sample_rp/textures/entity/sample_pack/UpperCase.png",
+      "pack": "resource_packs/sample_rp"
+    },
+    {
+      "id": "PACK/303",
+      "slug": "links-to-vanilla",
+      "severity": "recommendation",
+      "path": "resource_packs/sample_rp/entity/crab.entity.json",
+      "pack": "resource_packs/sample_rp",
+      "location": {
+        "field": "render_controllers"
+      }
+    },
+    {
+      "id": "SCRIPT/201",
+      "slug": "unknown-command",
+      "severity": "error",
+      "path": "behavior_packs/sample_bp/functions/hello.mcfunction",
+      "pack": "behavior_packs/sample_bp",
+      "location": {
+        "line": 2
+      }
+    },
+    {
+      "id": "SCRIPT/202",
+      "slug": "mcfunction-leading-slash",
+      "severity": "warning",
+      "path": "behavior_packs/sample_bp/functions/hello.mcfunction",
+      "pack": "behavior_packs/sample_bp",
+      "location": {
+        "line": 1
+      }
+    }
+  ]
+}

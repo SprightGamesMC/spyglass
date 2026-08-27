@@ -1,0 +1,8 @@
+node_modules
+dist
+tests/Scenarios
+src/Data/VanillaHashes.json
+package-lock.json
+docs
+*.md
+.github

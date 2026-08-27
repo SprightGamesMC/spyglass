@@ -1,0 +1,28 @@
+{
+  "exit_code": 1,
+  "content_type": "world",
+  "layout": "standard",
+  "passed": false,
+  "counts": {
+    "error": 1,
+    "warning": 1,
+    "recommendation": 0
+  },
+  "findings": [
+    {
+      "id": "WORLD/301",
+      "slug": "pack-reference-not-found",
+      "severity": "error",
+      "path": "world_behavior_packs.json",
+      "location": {
+        "field": "[1].pack_id"
+      }
+    },
+    {
+      "id": "WORLD/701",
+      "slug": "experiment-enabled",
+      "severity": "warning",
+      "path": "level.dat"
+    }
+  ]
+}

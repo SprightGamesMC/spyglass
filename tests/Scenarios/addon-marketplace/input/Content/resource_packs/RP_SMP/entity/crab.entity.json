@@ -1,0 +1,20 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "sample_pack:crab",
+      "textures": {
+        "default": "textures/entity/sample_pack/crab"
+      },
+      "geometry": {
+        "default": "geometry.sample_pack.crab"
+      },
+      "render_controllers": [
+        "controller.render.default"
+      ],
+      "animations": {
+        "walk": "animation.sample_pack.crab.walk"
+      }
+    }
+  }
+}

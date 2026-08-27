@@ -1,0 +1,24 @@
+{
+  "piece_id": "0a1b2c3d-9999-4a5b-8c9d-0e1f2a3b4c5d",
+  "piece_name": "sample_hat",
+  "piece_type": "persona_head",
+  "texture_sources": [
+    {
+      "texture": "sample_hat_body.png"
+    },
+    {
+      "texture": "sample_hat_head.png",
+      "use_face_uv": true
+    }
+  ],
+  "geometry_sources": [
+    {
+      "geometry": "geometry.sample_hat.tall",
+      "body_size": "tall"
+    },
+    {
+      "geometry": "geometry.sample_hat.medium",
+      "body_size": "medium"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "format_version": "1.8.0",
+  "geometry.sample_hat.tall": {
+    "bones": [
+      {
+        "name": "head",
+        "cubes": []
+      }
+    ]
+  },
+  "geometry.sample_hat.medium": {
+    "bones": []
+  },
+  "geometry.sample_hat.extra": {
+    "bones": []
+  }
+}

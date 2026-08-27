@@ -1,0 +1,98 @@
+{
+  "exit_code": 1,
+  "content_type": "skin",
+  "layout": "standard",
+  "passed": false,
+  "counts": {
+    "error": 10,
+    "warning": 0,
+    "recommendation": 0
+  },
+  "findings": [
+    {
+      "id": "SKIN/102",
+      "slug": "loc-key-missing",
+      "severity": "error",
+      "path": "skins.json",
+      "pack": ""
+    },
+    {
+      "id": "SKIN/203",
+      "slug": "texture-invalid-size",
+      "severity": "error",
+      "path": "bad.png",
+      "pack": ""
+    },
+    {
+      "id": "SKIN/204",
+      "slug": "geometry-not-allowed",
+      "severity": "error",
+      "path": "skins.json",
+      "pack": "",
+      "location": {
+        "field": "skins[2].geometry"
+      }
+    },
+    {
+      "id": "SKIN/205",
+      "slug": "texture-name-no-model-target",
+      "severity": "error",
+      "path": "skins.json",
+      "pack": "",
+      "location": {
+        "field": "skins[2].texture"
+      }
+    },
+    {
+      "id": "SKIN/206",
+      "slug": "loc-key-whitespace",
+      "severity": "error",
+      "path": "texts/en_US.lang",
+      "pack": ""
+    },
+    {
+      "id": "SKIN/207",
+      "slug": "purchase-type-invalid",
+      "severity": "error",
+      "path": "skins.json",
+      "pack": "",
+      "location": {
+        "field": "skins[2].type"
+      }
+    },
+    {
+      "id": "SKIN/301",
+      "slug": "texture-not-in-skins-json",
+      "severity": "error",
+      "path": "extra.png",
+      "pack": ""
+    },
+    {
+      "id": "SKIN/302",
+      "slug": "lang-key-not-in-skins-json",
+      "severity": "error",
+      "path": "texts/en_US.lang",
+      "pack": ""
+    },
+    {
+      "id": "SKIN/403",
+      "slug": "too-few-skins",
+      "severity": "error",
+      "path": "skins.json",
+      "pack": "",
+      "location": {
+        "field": "skins"
+      }
+    },
+    {
+      "id": "SKIN/701",
+      "slug": "cape-not-allowed",
+      "severity": "error",
+      "path": "skins.json",
+      "pack": "",
+      "location": {
+        "field": "skins[1].cape"
+      }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "format_version": 1,
+  "header": {
+    "name": "Sample Skins",
+    "uuid": "0a1b2c3d-5555-4a5b-8c9d-0e1f2a3b4c5d",
+    "version": [
+      1,
+      0,
+      0
+    ]
+  },
+  "modules": [
+    {
+      "type": "skin_pack",
+      "uuid": "0a1b2c3d-6666-4a5b-8c9d-0e1f2a3b4c5d",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+name: Vanilla data
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: npm ci
+      - id: check
+        run: npm run vanilla:check
+        continue-on-error: true
+      - if: steps.check.outcome == 'failure'
+        run: npm run vanilla
+      - if: steps.check.outcome == 'failure'
+        id: tag
+        run: echo "tag=$(node -e "console.log(JSON.parse(require('fs').readFileSync('src/Data/VanillaHashes.json','utf-8')).source.tag)")" >> "$GITHUB_OUTPUT"
+      - if: steps.check.outcome == 'failure'
+        run: SPYGLASS_UPDATE_SCENARIOS=1 npm test
+      - if: steps.check.outcome == 'failure'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: vanilla-data-${{ steps.tag.outputs.tag }}
+          title: "CHANGE | Vanilla data ${{ steps.tag.outputs.tag }}"
+          commit-message: "CHANGE | Vanilla data ${{ steps.tag.outputs.tag }}"
+          body: |
+            Rebuilt `src/Data/VanillaHashes.json` from samples tag `${{ steps.tag.outputs.tag }}` and regenerated the scenario reports.
+
+            Review the report diffs under `tests/Scenarios/` before merging and add a line to `CHANGELOG.md`.

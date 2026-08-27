@@ -1,0 +1,69 @@
+{
+    "name": "@sprightgames/spyglass",
+    "version": "0.1.0",
+    "description": "Validation CLI for Minecraft Bedrock content.",
+    "license": "MIT",
+    "keywords": [
+        "minecraft",
+        "bedrock",
+        "addon",
+        "resource-pack",
+        "behavior-pack",
+        "world-template",
+        "skin-pack",
+        "marketplace",
+        "validation",
+        "linter",
+        "cli"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/SprightGamesMC/spyglass.git"
+    },
+    "homepage": "https://github.com/SprightGamesMC/spyglass#readme",
+    "bugs": {
+        "url": "https://github.com/SprightGamesMC/spyglass/issues"
+    },
+    "author": "Spright Games Inc.",
+    "type": "module",
+    "main": "./dist/Main.js",
+    "types": "./dist/Main.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/Main.d.ts",
+            "default": "./dist/Main.js"
+        }
+    },
+    "bin": {
+        "spyglass": "./dist/Cli.js"
+    },
+    "files": [
+        "dist"
+    ],
+    "engines": {
+        "node": ">=20"
+    },
+    "packageManager": "npm@11.19.0",
+    "scripts": {
+        "build": "tsc -p tsconfig.build.json && node -e \"require('fs').copyFileSync('src/Data/VanillaHashes.json', 'dist/Data/VanillaHashes.json')\"",
+        "prepack": "npm run build",
+        "lint": "tsc --noEmit -p tsconfig.json && eslint . && prettier --check .",
+        "fmt": "prettier --write . && eslint . --fix",
+        "test": "npm run build && node --import tsx --test \"tests/**/*.test.ts\"",
+        "test:unit": "node --import tsx --test \"tests/Unit/**/*.test.ts\"",
+        "vanilla": "node --import tsx scripts/BuildVanillaData.ts",
+        "vanilla:check": "node --import tsx scripts/BuildVanillaData.ts --check"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.30.0",
+        "@types/node": "^22.10.0",
+        "eslint": "^9.30.0",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-prettier": "^5.5.5",
+        "globals": "^16.3.0",
+        "prettier": "^3.6.2",
+        "tsx": "^4.20.0",
+        "typescript": "^5.9.2",
+        "typescript-eslint": "^8.38.0"
+    }
+}

@@ -1,0 +1,29 @@
+import type { ArtRole } from "../../Types/ArtTypes.js";
+import type { CheckDefinition } from "../../Types/CheckTypes.js";
+import type { ArtFolder } from "../../Types/ModelTypes.js";
+import ArtChecks from "./ArtChecks.js";
+import ArtLimits from "./ArtLimits.js";
+import ArtRoleMissingCheck from "./ArtRoleMissingCheck.js";
+
+export default class MarketingPartnerArtMissing extends ArtRoleMissingCheck {
+    readonly definition: CheckDefinition = {
+        group: ArtChecks.GROUP,
+        number: ArtChecks.MARKETING_PARTNER_ART_MISSING,
+        slug: "marketing-partner-art-missing",
+        severity: "error",
+        description: "No partner art file",
+        excludedContentTypes: ["persona"],
+    };
+
+    protected role(): ArtRole {
+        return "partner_art";
+    }
+
+    protected folder(): ArtFolder {
+        return ArtLimits.MARKETING_FOLDER;
+    }
+
+    protected expectedName(): string {
+        return "Name" + ArtLimits.PARTNER_ART_SUFFIX + "." + ArtLimits.JPG_EXTENSION + " or ." + ArtLimits.PSD_EXTENSION;
+    }
+}

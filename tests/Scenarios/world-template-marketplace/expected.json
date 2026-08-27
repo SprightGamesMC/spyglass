@@ -1,0 +1,38 @@
+{
+  "exit_code": 1,
+  "content_type": "world",
+  "layout": "marketplace",
+  "passed": false,
+  "counts": {
+    "error": 2,
+    "warning": 1,
+    "recommendation": 0
+  },
+  "findings": [
+    {
+      "id": "MARKETPLACE/208",
+      "slug": "world-pack-reference-mismatch",
+      "severity": "error",
+      "path": "Content/world_template/world_resource_packs.json",
+      "pack": "Content/world_template/resource_packs/RP_SMW",
+      "location": {
+        "field": "[0].version"
+      }
+    },
+    {
+      "id": "WORLD/301",
+      "slug": "pack-reference-not-found",
+      "severity": "error",
+      "path": "Content/world_template/world_behavior_packs.json",
+      "location": {
+        "field": "[1].pack_id"
+      }
+    },
+    {
+      "id": "WORLD/701",
+      "slug": "experiment-enabled",
+      "severity": "warning",
+      "path": "Content/world_template/level.dat"
+    }
+  ]
+}

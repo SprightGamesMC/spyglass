@@ -1,0 +1,25 @@
+{
+  "serialize_name": "SampleSkins",
+  "localization_name": "SampleSkins",
+  "skins": [
+    {
+      "localization_name": "Crab",
+      "geometry": "geometry.humanoid.custom",
+      "texture": "crab_steve.png",
+      "type": "free"
+    },
+    {
+      "localization_name": "Fish",
+      "geometry": "geometry.humanoid.customSlim",
+      "texture": "fish_alex.png",
+      "type": "paid",
+      "cape": "cape.png"
+    },
+    {
+      "localization_name": "Bad",
+      "geometry": "geometry.cape",
+      "texture": "bad.png",
+      "type": "gift"
+    }
+  ]
+}

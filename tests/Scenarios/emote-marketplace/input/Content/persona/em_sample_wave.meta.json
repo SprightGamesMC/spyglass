@@ -1,0 +1,11 @@
+{
+  "piece_id": "0a1b2c3d-cccc-4a5b-8c9d-0e1f2a3b4c5d",
+  "piece_name": "em_sample_wave",
+  "piece_type": "persona_emote",
+  "animation_sources": [
+    {
+      "name": "animation.em_sample_wave",
+      "animationFile": "em_sample_wave.animation.json"
+    }
+  ]
+}

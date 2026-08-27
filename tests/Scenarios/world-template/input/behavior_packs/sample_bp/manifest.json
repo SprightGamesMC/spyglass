@@ -1,0 +1,30 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Sample BP",
+    "description": "Sample",
+    "uuid": "0a1b2c3d-1111-4a5b-8c9d-0e1f2a3b4c5d",
+    "version": [
+      1,
+      0,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      21,
+      0
+    ]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "0a1b2c3d-2222-4a5b-8c9d-0e1f2a3b4c5d",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    }
+  ],
+  "dependencies": []
+}

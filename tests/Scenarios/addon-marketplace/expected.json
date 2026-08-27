@@ -1,0 +1,204 @@
+{
+  "exit_code": 1,
+  "content_type": "addon",
+  "layout": "marketplace",
+  "passed": false,
+  "counts": {
+    "error": 12,
+    "warning": 6,
+    "recommendation": 4
+  },
+  "findings": [
+    {
+      "id": "ADDON/201",
+      "slug": "file-directly-in-type-folder",
+      "severity": "error",
+      "path": "Content/behavior_packs/BP_SMP/functions/hello.mcfunction",
+      "pack": "Content/behavior_packs/BP_SMP"
+    },
+    {
+      "id": "ADDON/203",
+      "slug": "creator-folder-name-generic",
+      "severity": "error",
+      "path": "Content/resource_packs/RP_SMP/textures/entity",
+      "pack": "Content/resource_packs/RP_SMP"
+    },
+    {
+      "id": "ADDON/207",
+      "slug": "definition-identifier-not-namespaced",
+      "severity": "error",
+      "path": "Content/behavior_packs/BP_SMP/entities/old.json",
+      "pack": "Content/behavior_packs/BP_SMP",
+      "location": {
+        "field": "minecraft:entity.description.identifier"
+      }
+    },
+    {
+      "id": "ADDON/209",
+      "slug": "resource-pack-scope-missing",
+      "severity": "error",
+      "path": "Content/resource_packs/RP_SMP/manifest.json",
+      "pack": "Content/resource_packs/RP_SMP",
+      "location": {
+        "field": "header.pack_scope"
+      }
+    },
+    {
+      "id": "ADDON/210",
+      "slug": "catalog-key-not-namespaced",
+      "severity": "error",
+      "path": "Content/resource_packs/RP_SMP/sounds/sound_definitions.json",
+      "pack": "Content/resource_packs/RP_SMP",
+      "location": {
+        "field": "sound_definitions.sample_pack.crab.click"
+      }
+    },
+    {
+      "id": "ADDON/211",
+      "slug": "path-not-namespaced",
+      "severity": "error",
+      "path": "Content/resource_packs/RP_SMP/textures/entity",
+      "pack": "Content/resource_packs/RP_SMP"
+    },
+    {
+      "id": "ADDON/703",
+      "slug": "world-impacting-command",
+      "severity": "warning",
+      "path": "Content/behavior_packs/BP_SMP/functions/hello.mcfunction",
+      "pack": "Content/behavior_packs/BP_SMP",
+      "location": {
+        "line": 3
+      }
+    },
+    {
+      "id": "ART/208",
+      "slug": "store-art-dpi-invalid",
+      "severity": "error",
+      "path": "Store Art/samplepack_packicon_0.jpg"
+    },
+    {
+      "id": "DEFINITION/501",
+      "slug": "format-version-below-expected",
+      "severity": "recommendation",
+      "path": "Content/behavior_packs/BP_SMP/entities/old.json",
+      "pack": "Content/behavior_packs/BP_SMP",
+      "location": {
+        "field": "format_version"
+      }
+    },
+    {
+      "id": "DEFINITION/501",
+      "slug": "format-version-below-expected",
+      "severity": "recommendation",
+      "path": "Content/resource_packs/RP_SMP/animations/crab.animation.json",
+      "pack": "Content/resource_packs/RP_SMP",
+      "location": {
+        "field": "format_version"
+      }
+    },
+    {
+      "id": "FILE/201",
+      "slug": "json-invalid",
+      "severity": "error",
+      "path": "Content/behavior_packs/BP_SMP/entities/invalid.json"
+    },
+    {
+      "id": "FILE/205",
+      "slug": "path-has-uppercase",
+      "severity": "recommendation",
+      "path": "Content/resource_packs/RP_SMP/textures/entity/sample_pack/UpperCase.png",
+      "pack": "Content/resource_packs/RP_SMP"
+    },
+    {
+      "id": "LANG/103",
+      "slug": "lang-file-missing",
+      "severity": "error",
+      "path": "Content/resource_packs/RP_SMP/texts/languages.json",
+      "pack": "Content/resource_packs/RP_SMP"
+    },
+    {
+      "id": "LANG/104",
+      "slug": "definition-name-key-missing",
+      "severity": "warning",
+      "path": "Content/behavior_packs/BP_SMP/entities/crab.json",
+      "pack": "Content/behavior_packs/BP_SMP",
+      "location": {
+        "field": "description.identifier"
+      }
+    },
+    {
+      "id": "LANG/104",
+      "slug": "definition-name-key-missing",
+      "severity": "warning",
+      "path": "Content/behavior_packs/BP_SMP/entities/crab.json",
+      "pack": "Content/behavior_packs/BP_SMP",
+      "location": {
+        "field": "description.identifier"
+      }
+    },
+    {
+      "id": "MARKETPLACE/107",
+      "slug": "product-type-missing",
+      "severity": "error",
+      "path": "Content/behavior_packs/BP_SMP/manifest.json",
+      "pack": "Content/behavior_packs/BP_SMP",
+      "location": {
+        "field": "metadata.product_type"
+      }
+    },
+    {
+      "id": "MARKETPLACE/107",
+      "slug": "product-type-missing",
+      "severity": "error",
+      "path": "Content/resource_packs/RP_SMP/manifest.json",
+      "pack": "Content/resource_packs/RP_SMP",
+      "location": {
+        "field": "metadata.product_type"
+      }
+    },
+    {
+      "id": "PACK/301",
+      "slug": "asset-unused",
+      "severity": "warning",
+      "path": "Content/resource_packs/RP_SMP/textures/entity/sample_pack/unused.png",
+      "pack": "Content/resource_packs/RP_SMP"
+    },
+    {
+      "id": "PACK/301",
+      "slug": "asset-unused",
+      "severity": "warning",
+      "path": "Content/resource_packs/RP_SMP/textures/entity/sample_pack/UpperCase.png",
+      "pack": "Content/resource_packs/RP_SMP"
+    },
+    {
+      "id": "PACK/303",
+      "slug": "links-to-vanilla",
+      "severity": "recommendation",
+      "path": "Content/resource_packs/RP_SMP/entity/crab.entity.json",
+      "pack": "Content/resource_packs/RP_SMP",
+      "location": {
+        "field": "render_controllers"
+      }
+    },
+    {
+      "id": "SCRIPT/201",
+      "slug": "unknown-command",
+      "severity": "error",
+      "path": "Content/behavior_packs/BP_SMP/functions/hello.mcfunction",
+      "pack": "Content/behavior_packs/BP_SMP",
+      "location": {
+        "line": 2
+      }
+    },
+    {
+      "id": "SCRIPT/202",
+      "slug": "mcfunction-leading-slash",
+      "severity": "warning",
+      "path": "Content/behavior_packs/BP_SMP/functions/hello.mcfunction",
+      "pack": "Content/behavior_packs/BP_SMP",
+      "location": {
+        "line": 1
+      }
+    }
+  ]
+}
