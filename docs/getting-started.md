@@ -2,7 +2,7 @@
 
 ## Install
 
-Spyglass needs Node 20 or later.
+Spyglass needs Node 22 or later.
 
 ```
 npm install --global @sprightgames/spyglass

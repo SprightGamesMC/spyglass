@@ -4,7 +4,7 @@ Validation CLI for Minecraft Bedrock content. Checks add-ons, world templates, s
 
 ## Install
 
-Node 20 or later.
+Node 22 or later.
 
 ```
 npm install --global @sprightgames/spyglass

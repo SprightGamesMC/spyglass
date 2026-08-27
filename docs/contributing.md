@@ -4,7 +4,7 @@ How the code is organized, how to add a check, and the rules the code follows.
 
 ## Setup
 
-Node 20 or later.
+Node 22 or later.
 
 ```
 npm install
@@ -17,7 +17,7 @@ npm run vanilla   rebuild src/Data/VanillaHashes.json from the newest samples re
 npm run vanilla:check   exit 1 when a newer samples release tag exists
 ```
 
-`.nvmrc` contains the Node version used for development and CI. CI runs `lint`, `test`, and a dry run of `npm pack` on pull requests to `main` and on every push to `main`, on Node 20 and 22, on Linux and Windows. Never edit `dist/`.
+`.nvmrc` contains the Node version used for development and CI. CI runs `lint`, `test`, and a dry run of `npm pack` on pull requests to `main` and on every push to `main`, on Node 22 and 24, on Linux and Windows. Never edit `dist/`.
 
 Everything Spyglass knows about Minecraft, where it comes from, and how it is updated is in [Minecraft versions](minecraft-versions.md). The steps for every Minecraft release are in [Game update steps](game-update.md).
 

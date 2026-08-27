@@ -123,7 +123,7 @@ Add one scenario input for any new feature that got a check in step 7.
 - [ ] Every changed expected report line is explained in the pull request body
 - [ ] `docs/checks/<group>.md` matches every changed constant
 - [ ] `CHANGELOG.md` has the entry
-- [ ] `npm run lint` and `npm test` pass on Node 20 and 22
+- [ ] `npm run lint` and `npm test` pass on Node 22 and 24
 
 ## What never changes in a game update
 
