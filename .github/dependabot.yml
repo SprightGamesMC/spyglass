@@ -7,6 +7,9 @@ updates:
     groups:
       development:
         patterns: ["*"]
+    ignore:
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
     commit-message:
       prefix: "CHANGE | "
   - package-ecosystem: github-actions
