@@ -6,7 +6,11 @@ export default abstract class LangLimits {
     static readonly PRIMARY_LANG_FILE = LanguageCatalogReader.PRIMARY_LANG_FILE;
     static readonly COMMENT_CHARACTER = "#";
     static readonly COMMENT_MARKER = "##";
+    static readonly VALUE_COMMENT_SEPARATOR = "\t";
     static readonly KEY_VALUE_SEPARATOR = "=";
+    static readonly KEY_PATTERN = /^[A-Za-z0-9._:-]+$/;
+    static readonly KEY_DISALLOWED_CHARACTER = /[^A-Za-z0-9._:-]/;
+    static readonly KEY_ALLOWED_CHARACTERS = "letters, digits, ., _, :, or -";
     static readonly TOKEN_SEPARATOR = /[^a-z0-9]+/;
     static readonly ENTITY_KEY_PREFIX = "entity.";
     static readonly SPAWN_EGG_KEY_PREFIX = "item.spawn_egg.entity.";

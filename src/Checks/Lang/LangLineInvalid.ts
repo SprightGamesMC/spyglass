@@ -35,12 +35,52 @@ export default class LangLineInvalid extends Check {
             return "key is empty";
         }
 
-        return trimmed
-            .slice(separator + 1)
-            .split(LangLimits.COMMENT_MARKER)[0]
-            .trim() === ""
-            ? "value is empty"
-            : undefined;
+        const key = trimmed.slice(0, separator);
+
+        if (!LangLimits.KEY_PATTERN.test(key)) {
+            return "key " + key + " contains " + LangLineInvalid.describeCharacter(key) + ", expected " + LangLimits.KEY_ALLOWED_CHARACTERS;
+        }
+
+        const rest = trimmed.slice(separator + 1);
+        const commentProblem = LangLineInvalid.commentProblem(rest);
+
+        if (commentProblem !== undefined) {
+            return commentProblem;
+        }
+
+        return rest.split(LangLimits.VALUE_COMMENT_SEPARATOR)[0].trim() === "" ? "value is empty" : undefined;
+    }
+
+    private static commentProblem(rest: string): string | undefined {
+        const hash = rest.indexOf(LangLimits.COMMENT_CHARACTER);
+
+        if (hash < 0) {
+            return undefined;
+        }
+
+        if (rest[hash - 1] !== LangLimits.VALUE_COMMENT_SEPARATOR) {
+            return "comment does not follow a tab";
+        }
+
+        if (!rest.startsWith(LangLimits.COMMENT_MARKER, hash)) {
+            return "comment does not start with " + LangLimits.COMMENT_MARKER;
+        }
+
+        return undefined;
+    }
+
+    private static describeCharacter(key: string): string {
+        const character = LangLimits.KEY_DISALLOWED_CHARACTER.exec(key)?.[0] ?? "";
+
+        if (character === " ") {
+            return "a space";
+        }
+
+        if (character === "\t") {
+            return "a tab";
+        }
+
+        return character;
     }
 
     private lines(pack: Pack, item: ContentItem, lines: readonly string[]): Finding[] {

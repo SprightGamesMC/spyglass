@@ -60,9 +60,9 @@ Fix: rewrite the file as a plain array of language code strings.
 
 ## LANG/202 lang-line-invalid
 
-A line in a `.lang` file is not a key and a value separated by `=`. Blank lines and lines that start with `##` are skipped. Reported cases: a line that starts with a single `#`, a line with no `=`, an empty key, and an empty value. One finding per line, with the line number.
+A line in a `.lang` file is not a key and a value separated by `=`. Blank lines and lines that start with `##` are skipped. Reported cases: a line that starts with a single `#`, a line with no `=`, an empty key, an empty value, a key that contains a character other than a letter, digit, `.`, `_`, `:`, or `-`, and a `#` after the `=` that is not a comment. A comment after the value is a tab followed by `##`. A `#` that does not follow a tab, or a single `#` after a tab, is reported. The key is the text before the first `=`, so a space before the `=` is part of the key. The value is the text between the `=` and the first tab. One finding per line, with the line number.
 
-Fix: write the line as `key=value`, start a comment with `##`, or delete the line.
+Fix: write the line as `key=value` with a key made of the allowed characters, write a comment after the value as a tab followed by `##`, start a comment line with `##`, or delete the line.
 
 ## LANG/301 lang-file-not-in-catalog
 

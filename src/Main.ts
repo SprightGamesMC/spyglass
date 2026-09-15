@@ -24,7 +24,7 @@ import ModelBuilder from "./Model/ModelBuilder.js";
 import StorageFactory from "./Storage/StorageFactory.js";
 
 export default abstract class Main {
-    static readonly TOOL_VERSION = "0.1.0";
+    static readonly TOOL_VERSION = "0.1.1";
     private static readonly DEFAULT_VERBOSITY: Verbosity = "normal";
     private static readonly FINDINGS_HIDDEN_VERBOSITIES: readonly Verbosity[] = ["silent", "summary"];
     private static readonly MILLISECONDS_SUFFIX = /\.\d{3}Z$/;
