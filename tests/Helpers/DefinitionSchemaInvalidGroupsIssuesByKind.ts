@@ -73,6 +73,15 @@ export default abstract class DefinitionSchemaInvalidGroupsIssuesByKind {
             expectedMessages: [],
         },
         {
+            name: "multipart block column feature at the current release matches the schema",
+            path: "BP/features/d.json",
+            content: {
+                format_version: ModelFixture.DEFAULT_GAME_VERSION,
+                "minecraft:multipart_block_column_feature": { description: { identifier: "x:d" }, parts: [] },
+            },
+            expectedMessages: [],
+        },
+        {
             name: "minecraft:made_up_feature is a root key no schema knows",
             path: "BP/features/c.json",
             content: { format_version: "1.13.0", "minecraft:made_up_feature": { description: { identifier: "x:c" } } },

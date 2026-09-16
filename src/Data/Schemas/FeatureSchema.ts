@@ -12,6 +12,7 @@ export default abstract class FeatureSchema {
         "minecraft:growing_plant_feature",
         "minecraft:hell_cave_carver_feature",
         "minecraft:multiface_feature",
+        "minecraft:multipart_block_column_feature",
         "minecraft:nether_cave_carver_feature",
         "minecraft:ore_feature",
         "minecraft:partially_exposed_blob_feature",
