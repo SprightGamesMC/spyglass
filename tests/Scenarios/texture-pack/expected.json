@@ -5,10 +5,390 @@
   "passed": false,
   "counts": {
     "error": 1,
-    "warning": 2676,
+    "warning": 2752,
     "recommendation": 0
   },
   "findings": [
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
+    {
+      "id": "TEXTUREPACK/301",
+      "slug": "vanilla-texture-not-overridden",
+      "severity": "warning"
+    },
     {
       "id": "TEXTUREPACK/301",
       "slug": "vanilla-texture-not-overridden",
