@@ -4,6 +4,7 @@ import type { Pack } from "../../Types/ModelTypes.js";
 import ManifestLoader from "../../Loaders/ManifestLoader.js";
 import ManifestCheck from "./ManifestCheck.js";
 import ManifestChecks from "./ManifestChecks.js";
+import ManifestLimits from "./ManifestLimits.js";
 
 export default class SettingOptionsDuplicate extends ManifestCheck {
     readonly definition: CheckDefinition = {
@@ -11,14 +12,14 @@ export default class SettingOptionsDuplicate extends ManifestCheck {
         number: ManifestChecks.SETTING_OPTIONS_DUPLICATE,
         slug: "setting-options-duplicate",
         severity: "error",
-        description: "Dropdown has repeated option names",
+        description: "Dropdown or multiselect has repeated option names",
     };
 
     protected async checkManifest(_context: CheckContext, pack: Pack, manifest: JsonObject): Promise<Finding[]> {
         const findings: Finding[] = [];
 
         ManifestLoader.settings(manifest).forEach((setting, index) => {
-            if (setting.type !== "dropdown") {
+            if (typeof setting.type !== "string" || !ManifestLimits.OPTION_SETTING_TYPES.includes(setting.type)) {
                 return;
             }
 
@@ -26,7 +27,7 @@ export default class SettingOptionsDuplicate extends ManifestCheck {
             const field = "settings[" + index + "].options";
 
             for (const name of this.duplicates(names)) {
-                findings.push(this.manifestFinding(pack, "dropdown option " + name + " is used more than once", field));
+                findings.push(this.manifestFinding(pack, setting.type + " option " + name + " is used more than once", field));
             }
         });
 

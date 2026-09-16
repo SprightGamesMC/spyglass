@@ -19,6 +19,16 @@ export default class SettingDefaultInvalid extends ManifestCheck {
         const findings: Finding[] = [];
 
         ManifestLoader.settings(manifest).forEach((setting, index) => {
+            if (setting.type === "multiselect") {
+                const message = this.checkMultiselect(setting);
+
+                if (message !== undefined) {
+                    findings.push(this.manifestFinding(pack, message, "settings[" + index + "].defaults"));
+                }
+
+                return;
+            }
+
             const field = "settings[" + index + "].default";
 
             if (setting.type === "slider") {
@@ -73,5 +83,20 @@ export default class SettingDefaultInvalid extends ManifestCheck {
         }
 
         return "dropdown default " + JSON.stringify(setting.default) + " is not one of the options " + names.join(", ");
+    }
+
+    private checkMultiselect(setting: JsonObject): string | undefined {
+        if (!JsonLoader.isArray(setting.defaults) || !JsonLoader.isArray(setting.options)) {
+            return undefined;
+        }
+
+        const names = ManifestLoader.optionNames(setting);
+        const unknown = setting.defaults.filter((entry) => typeof entry !== "string" || !names.includes(entry));
+
+        if (unknown.length === 0) {
+            return undefined;
+        }
+
+        return "multiselect defaults " + JSON.stringify(unknown) + " are not among the options " + names.join(", ");
     }
 }

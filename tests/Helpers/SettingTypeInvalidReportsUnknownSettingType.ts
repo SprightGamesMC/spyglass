@@ -7,7 +7,7 @@ export default abstract class SettingTypeInvalidReportsUnknownSettingType {
     static readonly ID = "MANIFEST/215";
     static readonly CASES: readonly SettingTypeInvalidReportsUnknownSettingTypeCase[] = [
         {
-            name: "label, toggle, slider and dropdown are recognized setting types",
+            name: "label, toggle, slider, dropdown and multiselect are recognized setting types",
             files: ManifestFixture.behaviorWithSettings(ManifestFixture.VALID_SETTINGS),
             expectedIds: [],
             expectedPaths: [],

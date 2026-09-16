@@ -28,11 +28,22 @@ export default abstract class ManifestFixture {
             { name: "two", text: "Two" },
         ],
     };
+    static readonly MULTISELECT: ManifestObject = {
+        type: "multiselect",
+        text: "Multiselect",
+        name: "test:multiselect",
+        defaults: ["one"],
+        options: [
+            { name: "one", text: "One" },
+            { name: "two", text: "Two" },
+        ],
+    };
     static readonly VALID_SETTINGS: readonly ManifestObject[] = [
         ManifestFixture.LABEL,
         ManifestFixture.TOGGLE,
         ManifestFixture.SLIDER,
         ManifestFixture.DROPDOWN,
+        ManifestFixture.MULTISELECT,
     ];
 
     static run(check: Check, entry: ManifestCase): Promise<FindingSummary> {
