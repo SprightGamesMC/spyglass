@@ -216,6 +216,20 @@ export default abstract class DefinitionFormatVersionAboveExpectedReportsNewerVe
             formatVersion: "11.0.0",
             expectFinding: true,
         },
+        {
+            name: "jigsaw structure 10.30.20 equals the current release",
+            path: "BP/worldgen/structures/house.json",
+            rootKey: "minecraft:jigsaw",
+            formatVersion: "10.30.20",
+            expectFinding: false,
+        },
+        {
+            name: "template pool 11.0.0 is above the current release",
+            path: "BP/worldgen/template_pools/pool.json",
+            rootKey: "minecraft:template_pool",
+            formatVersion: "11.0.0",
+            expectFinding: true,
+        },
     ];
 
     static run(entry: DefinitionFormatVersionAboveExpectedReportsNewerVersionCase): Promise<Finding[]> {

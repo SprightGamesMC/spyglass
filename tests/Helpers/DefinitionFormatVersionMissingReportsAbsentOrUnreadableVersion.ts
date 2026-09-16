@@ -67,6 +67,12 @@ export default abstract class DefinitionFormatVersionMissingReportsAbsentOrUnrea
             expectFinding: true,
         },
         {
+            name: "template pool with no format_version has no version",
+            path: "BP/worldgen/template_pools/pool.json",
+            content: { "minecraft:template_pool": {} },
+            expectFinding: true,
+        },
+        {
             name: "item with no format_version has no version",
             path: "BP/items/a.json",
             content: { "minecraft:item": {} },

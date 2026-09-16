@@ -51,7 +51,7 @@ Skip a whole category inside a group with a range: `--skip TEXTURE/400-499`.
 | [SCRIPT](script.md) | Script modules, beta APIs, commands in `.mcfunction` files |
 | [ENTITY](entity.md) | Entity only rules. `runtime_identifier` |
 | [BLOCK](block.md) | Block only rules. `blocks.json` catalog |
-| [DEFINITION](definition.md) | Rules shared by every definition file. `format_version`, schema, `minecraft:` namespace. Entities, items, blocks, animations, attachables, particles, recipes, spawn rules, fog, biomes, features |
+| [DEFINITION](definition.md) | Rules shared by every definition file. `format_version`, schema, `minecraft:` namespace. Entities, items, blocks, animations, attachables, particles, recipes, spawn rules, fog, biomes, features, jigsaw structures |
 | [WORLD](world.md) | World template files. `level.dat`, icon, pack references, `base_game_version`, experiments |
 | [CHUNK](chunk.md) | The world `db` folder. Command blocks, custom dimensions. Slow |
 | [TEXTUREPACK](texturepack.md) | Texture pack only rules. Resource pack alone, vanilla texture coverage |
