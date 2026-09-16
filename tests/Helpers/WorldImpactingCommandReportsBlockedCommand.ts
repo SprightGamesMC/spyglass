@@ -13,10 +13,10 @@ export default abstract class WorldImpactingCommandReportsBlockedCommand {
             expectedLines: [],
         },
         {
-            name: "gamerule and time in a function change global world state",
+            name: "gamerule, time, and serveridentity in a function change global world state",
             path: AddonFixture.BP + "functions/spright_cave/a.mcfunction",
-            content: "# comment\ngamerule doDaylightCycle false\nsay ok\n/time set day\n",
-            expectedLines: [2, 4],
+            content: "# comment\ngamerule doDaylightCycle false\nsay ok\n/time set day\nserveridentity status\n",
+            expectedLines: [2, 4, 5],
         },
         {
             name: "difficulty in a dialogue command list changes global world state",
