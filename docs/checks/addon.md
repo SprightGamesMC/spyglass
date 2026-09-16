@@ -251,7 +251,7 @@ Fix: remove the `ui` folder.
 
 ## ADDON/703 world-impacting-command
 
-A command that changes global world state is used in a `.mcfunction` file, a dialogue file, or an animation event list. Blocked commands: `allowlist`, `alwaysday`, `changesetting`, `connect`, `daylock`, `deop`, `difficulty`, `gamemode`, `gamerule`, `gametest`, `help`, `kick`, `list`, `locate`, `op`, `ops`, `permission`, `project`, `reload`, `reloadconfig`, `save`, `script`, `setmaxplayers`, `setworldspawn`, `simulationtype`, `stop`, `tickingarea`, `time`, `transfer`, `wsserver`, `whitelist`, `?`.
+A command that changes global world state is used in a `.mcfunction` file, a dialogue file, or an animation event list. Blocked commands: `allowlist`, `alwaysday`, `changesetting`, `connect`, `daylock`, `deop`, `difficulty`, `gamemode`, `gamerule`, `gametest`, `help`, `kick`, `list`, `locate`, `op`, `ops`, `permission`, `project`, `reload`, `reloadconfig`, `save`, `script`, `serveridentity`, `setmaxplayers`, `setworldspawn`, `simulationtype`, `stop`, `tickingarea`, `time`, `transfer`, `wsserver`, `whitelist`, `?`.
 
 Fix: remove the command, or replace it with one that only affects the addon content.
 

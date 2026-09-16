@@ -23,6 +23,7 @@ export default abstract class SoundDefinitionsSchema {
             min_distance: { type: ["number", "null"] },
             max_distance: { type: ["number", "null"] },
             __use_legacy_max_distance: { anyOf: [{ type: "boolean" }, { type: "string", enum: ["true", "false"] }] },
+            allow_concurrent_streaming: { type: "boolean" },
         },
         required: ["sounds"],
     };

@@ -64,6 +64,7 @@ export default abstract class ManifestSchema {
                 text: { type: "string" },
                 name: { type: "string" },
                 default: { type: ["boolean", "number", "string"] },
+                defaults: { type: "array", items: { type: "string" } },
                 min: { type: "number" },
                 max: { type: "number" },
                 step: { type: "number" },

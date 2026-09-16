@@ -17,6 +17,7 @@ export default abstract class SoundDefinitionsInvalidGroupsIssuesByKind {
                         min_distance: null,
                         max_distance: 16,
                         __use_legacy_max_distance: "true",
+                        allow_concurrent_streaming: false,
                         sounds: ["sounds/mob/thing/say1", { name: "sounds/mob/thing/say2", volume: 0.5, pitch: 1.2, is3D: true }],
                     },
                 },

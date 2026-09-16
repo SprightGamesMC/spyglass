@@ -37,13 +37,15 @@ export default abstract class ManifestLimits {
         "777b1798-13a6-401c-9cba-0cf17e31a81b": "@minecraft/server-net",
         "2bd50a27-ab5f-4f40-a596-3641627c635e": "@minecraft/server-ui",
     };
-    static readonly KNOWN_SETTING_TYPES: readonly string[] = ["label", "toggle", "slider", "dropdown"];
+    static readonly KNOWN_SETTING_TYPES: readonly string[] = ["label", "toggle", "slider", "dropdown", "multiselect"];
+    static readonly OPTION_SETTING_TYPES: readonly string[] = ["dropdown", "multiselect"];
     static readonly SETTING_REQUIRED_FIELDS: Readonly<Record<string, readonly string[]>> = {
         toggle: ["name", "default"],
         slider: ["name", "min", "max", "step", "default"],
         dropdown: ["name", "default", "options"],
+        multiselect: ["name", "defaults", "options"],
     };
-    static readonly DROPDOWN_MIN_OPTIONS = 2;
+    static readonly OPTIONS_MINIMUM_COUNT = 2;
     static readonly NAMESPACE_PATTERN = /^.+:.+$/;
     static readonly PACK_ICON_KINDS: readonly ItemKind[] = ["pack_icon"];
     static readonly PACK_ICON_SIDES: readonly number[] = [2, 4, 8, 16, 32, 64, 128, 256];

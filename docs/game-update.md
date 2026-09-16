@@ -53,7 +53,7 @@ Every constant is in a `Limits` file. Go through this table row by row against t
 
 | Constant | File | Changes when |
 |---|---|---|
-| `EXPECTED_FORMAT_VERSION` | `Animation/AnimationLimits.ts`, `Attachable/AttachableLimits.ts` | Samples increase the format version of animations, controllers, or attachables |
+| `EXACT_EXPECTED_VERSION` | `Definition/DefinitionLimits.ts` | Samples increase the format version of animations or animation controllers |
 | `FLOOR_VERSIONS` | `Definition/DefinitionLimits.ts` | Samples lower the oldest accepted version of attachables, resource pack entity files, particles, or geometry |
 | `ANIMATION_FORMAT_VERSION` | `Emote/EmoteLimits.ts` | Emote format guidance changes |
 | `GEOMETRY_FORMAT_VERSION` | `Persona/PersonaLimits.ts` | Persona geometry format guidance changes |

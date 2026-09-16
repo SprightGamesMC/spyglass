@@ -7,7 +7,7 @@ export default abstract class SettingOptionsDuplicateReportsRepeatedOptionName {
     static readonly ID = "MANIFEST/606";
     static readonly CASES: readonly SettingOptionsDuplicateReportsRepeatedOptionNameCase[] = [
         {
-            name: "dropdown options one and two are distinct names",
+            name: "dropdown and multiselect options one and two are distinct names",
             files: ManifestFixture.behaviorWithSettings(ManifestFixture.VALID_SETTINGS),
             expectedIds: [],
             expectedPaths: [],
@@ -17,6 +17,20 @@ export default abstract class SettingOptionsDuplicateReportsRepeatedOptionName {
             files: ManifestFixture.behaviorWithSettings([
                 {
                     ...ManifestFixture.DROPDOWN,
+                    options: [
+                        { name: "one", text: "One" },
+                        { name: "one", text: "Uno" },
+                    ],
+                },
+            ]),
+            expectedIds: ["MANIFEST/606"],
+            expectedPaths: ["BP/manifest.json"],
+        },
+        {
+            name: "multiselect options both named one repeat an option name",
+            files: ManifestFixture.behaviorWithSettings([
+                {
+                    ...ManifestFixture.MULTISELECT,
                     options: [
                         { name: "one", text: "One" },
                         { name: "one", text: "Uno" },

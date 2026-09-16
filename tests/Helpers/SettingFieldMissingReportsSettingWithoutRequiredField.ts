@@ -7,7 +7,7 @@ export default abstract class SettingFieldMissingReportsSettingWithoutRequiredFi
     static readonly ID = "MANIFEST/104";
     static readonly CASES: readonly SettingFieldMissingReportsSettingWithoutRequiredFieldCase[] = [
         {
-            name: "label, toggle, slider and dropdown each have every required field",
+            name: "label, toggle, slider, dropdown and multiselect each have every required field",
             files: ManifestFixture.behaviorWithSettings(ManifestFixture.VALID_SETTINGS),
             expectedIds: [],
             expectedPaths: [],
@@ -27,6 +27,12 @@ export default abstract class SettingFieldMissingReportsSettingWithoutRequiredFi
         {
             name: "dropdown without options lacks a required field",
             files: ManifestFixture.behaviorWithSettings([ManifestFixture.without(ManifestFixture.DROPDOWN, "options")]),
+            expectedIds: ["MANIFEST/104"],
+            expectedPaths: ["BP/manifest.json"],
+        },
+        {
+            name: "multiselect without defaults lacks a required field",
+            files: ManifestFixture.behaviorWithSettings([ManifestFixture.without(ManifestFixture.MULTISELECT, "defaults")]),
             expectedIds: ["MANIFEST/104"],
             expectedPaths: ["BP/manifest.json"],
         },

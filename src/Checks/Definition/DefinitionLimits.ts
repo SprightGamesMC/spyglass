@@ -33,11 +33,16 @@ export default abstract class DefinitionLimits {
     ];
     static readonly EXACT_KINDS: readonly ItemKind[] = DefinitionLimits.ANIMATION_KINDS;
     static readonly EXACT_EXPECTED_VERSION: GameVersion = { major: 1, minor: 10, patch: 0 };
+    static readonly JIGSAW_FLOOR_VERSION: GameVersion = { major: 1, minor: 21, patch: 20 };
     static readonly FLOOR_VERSIONS: ReadonlyMap<ItemKind, GameVersion> = new Map<ItemKind, GameVersion>([
         ["attachable", { major: 1, minor: 10, patch: 0 }],
         ["entity_resource", { major: 1, minor: 10, patch: 0 }],
         ["particle", { major: 1, minor: 10, patch: 0 }],
         ["geometry", { major: 1, minor: 8, patch: 0 }],
+        ["jigsaw_structure", DefinitionLimits.JIGSAW_FLOOR_VERSION],
+        ["template_pool", DefinitionLimits.JIGSAW_FLOOR_VERSION],
+        ["structure_set", DefinitionLimits.JIGSAW_FLOOR_VERSION],
+        ["processor_list", DefinitionLimits.JIGSAW_FLOOR_VERSION],
     ]);
     static readonly FLOOR_KINDS: readonly ItemKind[] = [...DefinitionLimits.FLOOR_VERSIONS.keys()];
     static readonly BELOW_KINDS: readonly ItemKind[] = [

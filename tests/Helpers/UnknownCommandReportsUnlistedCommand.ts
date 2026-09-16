@@ -9,9 +9,9 @@ export default abstract class UnknownCommandReportsUnlistedCommand {
     static readonly DIALOGUE_PATH = "BP/dialogue/talk.json";
     static readonly CASES: readonly UnknownCommandCase[] = [
         {
-            name: "say, tp, and execute are built in commands",
+            name: "say, tp, execute, and serveridentity are built in commands",
             source: "mcfunction",
-            lines: ["say hi", "/tp @s 0 0 0", "# comment", "", "execute as @a run say x"],
+            lines: ["say hi", "/tp @s 0 0 0", "# comment", "", "execute as @a run say x", "serveridentity status"],
             expectedMessages: [],
             expectedLines: [],
         },

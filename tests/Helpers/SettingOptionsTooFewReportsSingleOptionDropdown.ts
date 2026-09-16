@@ -7,7 +7,7 @@ export default abstract class SettingOptionsTooFewReportsSingleOptionDropdown {
     static readonly ID = "MANIFEST/401";
     static readonly CASES: readonly SettingOptionsTooFewReportsSingleOptionDropdownCase[] = [
         {
-            name: "dropdown with 2 options meets the minimum",
+            name: "dropdown and multiselect with 2 options meet the minimum",
             files: ManifestFixture.behaviorWithSettings(ManifestFixture.VALID_SETTINGS),
             expectedIds: [],
             expectedPaths: [],
@@ -15,6 +15,12 @@ export default abstract class SettingOptionsTooFewReportsSingleOptionDropdown {
         {
             name: "dropdown with 1 option is below the 2 option minimum",
             files: ManifestFixture.behaviorWithSettings([{ ...ManifestFixture.DROPDOWN, options: [{ name: "one", text: "One" }] }]),
+            expectedIds: ["MANIFEST/401"],
+            expectedPaths: ["BP/manifest.json"],
+        },
+        {
+            name: "multiselect with 1 option is below the 2 option minimum",
+            files: ManifestFixture.behaviorWithSettings([{ ...ManifestFixture.MULTISELECT, options: [{ name: "one", text: "One" }] }]),
             expectedIds: ["MANIFEST/401"],
             expectedPaths: ["BP/manifest.json"],
         },

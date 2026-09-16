@@ -11,6 +11,7 @@ export default abstract class VersionFetcher {
         "@minecraft/server",
         "@minecraft/server-ui",
         "@minecraft/server-gametest",
+        "@minecraft/server-graphics",
         "@minecraft/server-net",
         "@minecraft/server-admin",
         "@minecraft/debug-utilities",

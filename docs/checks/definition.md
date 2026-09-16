@@ -23,6 +23,7 @@ Which files each check inspects:
 | Entity | `entity` in a resource pack | yes | no | at least `1.10.0` | current release | no |
 | Particle | `particles` | yes | no | at least `1.10.0` | current release | no |
 | Geometry | `models` | yes | no | at least `1.8.0` | current release | no |
+| Jigsaw structure, template pool, structure set, processor list | `worldgen` in a behavior pack | yes | no | at least `1.21.20` | current release | no |
 
 The expected version column has four sources.
 

@@ -7,7 +7,7 @@ export default abstract class SettingDefaultInvalidReportsDefaultOutsideRangeOrO
     static readonly ID = "MANIFEST/217";
     static readonly CASES: readonly SettingDefaultInvalidReportsDefaultOutsideRangeOrOptionsCase[] = [
         {
-            name: "toggle, slider and dropdown defaults are inside their range or options",
+            name: "toggle, slider, dropdown and multiselect defaults are inside their range or options",
             files: ManifestFixture.behaviorWithSettings(ManifestFixture.VALID_SETTINGS),
             expectedIds: [],
             expectedPaths: [],
@@ -27,6 +27,12 @@ export default abstract class SettingDefaultInvalidReportsDefaultOutsideRangeOrO
         {
             name: "dropdown default three is not one of its options",
             files: ManifestFixture.behaviorWithSettings([{ ...ManifestFixture.DROPDOWN, default: "three" }]),
+            expectedIds: ["MANIFEST/217"],
+            expectedPaths: ["BP/manifest.json"],
+        },
+        {
+            name: "multiselect defaults one and three include a name that is not one of its options",
+            files: ManifestFixture.behaviorWithSettings([{ ...ManifestFixture.MULTISELECT, defaults: ["one", "three"] }]),
             expectedIds: ["MANIFEST/217"],
             expectedPaths: ["BP/manifest.json"],
         },

@@ -34,7 +34,7 @@ Runs for: addon, world, skin, texture, persona.
 | MANIFEST/219 | pack-icon-invalid-image | error | pack_icon.png cannot be decoded |
 | MANIFEST/220 | pack-icon-invalid-size | error | pack_icon.png not a square power of two from 2 to 256 |
 | MANIFEST/301 | dependency-not-found | error | Dependency uuid does not match any pack |
-| MANIFEST/401 | setting-options-too-few | error | Dropdown has fewer than 2 options |
+| MANIFEST/401 | setting-options-too-few | error | Dropdown or multiselect has fewer than 2 options |
 | MANIFEST/501 | format-version-1-not-allowed | error | Behavior, resource, or world template manifest uses format_version 1 |
 | MANIFEST/502 | min-engine-version-below-current | recommendation | min_engine_version below the previous release |
 | MANIFEST/503 | min-engine-version-above-current | error | min_engine_version newer than current release |
@@ -46,7 +46,7 @@ Runs for: addon, world, skin, texture, persona.
 | MANIFEST/603 | subpack-folder-duplicate | error | Two subpacks use the same folder_name |
 | MANIFEST/604 | subpack-name-duplicate | error | Two subpacks use the same name |
 | MANIFEST/605 | setting-name-duplicate | error | Two settings use the same name |
-| MANIFEST/606 | setting-options-duplicate | error | Dropdown has repeated option names |
+| MANIFEST/606 | setting-options-duplicate | error | Dropdown or multiselect has repeated option names |
 | MANIFEST/607 | multiple-pack-icons | error | More than one pack_icon file |
 | MANIFEST/701 | capabilities-on-behavior-pack | warning | Behavior pack declares capabilities |
 
@@ -72,7 +72,7 @@ Fix: add `"capabilities": ["pbr"]`, or remove the texture set layers.
 
 ## MANIFEST/104 setting-field-missing
 
-An entry in `settings` lacks a field its type needs. A `toggle` needs `name` and `default`. A `slider` needs `name`, `min`, `max`, `step`, and `default`. A `dropdown` needs `name`, `default`, and `options`.
+An entry in `settings` lacks a field its type needs. A `toggle` needs `name` and `default`. A `slider` needs `name`, `min`, `max`, `step`, and `default`. A `dropdown` needs `name`, `default`, and `options`. A `multiselect` needs `name`, `defaults`, and `options`.
 
 Fix: add the missing field to that setting.
 
@@ -168,7 +168,7 @@ Fix: remove `subpacks`.
 
 ## MANIFEST/215 setting-type-invalid
 
-A setting `type` is missing or not one of `label`, `toggle`, `slider`, `dropdown`.
+A setting `type` is missing or not one of `label`, `toggle`, `slider`, `dropdown`, `multiselect`.
 
 Fix: set the setting `type` to a known value.
 
@@ -180,7 +180,7 @@ Fix: adjust `min`, `max`, and `step`.
 
 ## MANIFEST/217 setting-default-invalid
 
-A setting `default` is outside what it allows. A slider default must be a number between `min` and `max`. A dropdown default must be one of the option names.
+A setting `default` is outside what it allows. A slider default must be a number between `min` and `max`. A dropdown default must be one of the option names. Every entry in a multiselect `defaults` must be one of the option names.
 
 Fix: set `default` to an allowed value.
 
@@ -210,9 +210,9 @@ Fix: correct the dependency `uuid`, or include the missing pack in the project.
 
 ## MANIFEST/401 setting-options-too-few
 
-A dropdown setting has fewer than 2 options.
+A dropdown or multiselect setting has fewer than 2 options.
 
-Fix: give the dropdown at least 2 entries in `options`, or use another setting type.
+Fix: give the setting at least 2 entries in `options`, or use another setting type.
 
 ## MANIFEST/501 format-version-1-not-allowed
 
@@ -294,7 +294,7 @@ Fix: give each setting a unique `name`.
 
 ## MANIFEST/606 setting-options-duplicate
 
-A dropdown setting has repeated option names.
+A dropdown or multiselect setting has repeated option names.
 
 Fix: remove or rename the repeats so each name appears once.
 

@@ -13,23 +13,24 @@ export default class SettingOptionsTooFew extends ManifestCheck {
         number: ManifestChecks.SETTING_OPTIONS_TOO_FEW,
         slug: "setting-options-too-few",
         severity: "error",
-        description: "Dropdown has fewer than " + ManifestLimits.DROPDOWN_MIN_OPTIONS + " options",
+        description: "Dropdown or multiselect has fewer than " + ManifestLimits.OPTIONS_MINIMUM_COUNT + " options",
     };
 
     protected async checkManifest(_context: CheckContext, pack: Pack, manifest: JsonObject): Promise<Finding[]> {
         const findings: Finding[] = [];
 
         ManifestLoader.settings(manifest).forEach((setting, index) => {
-            if (setting.type !== "dropdown" || !JsonLoader.isArray(setting.options)) {
+            if (typeof setting.type !== "string" || !ManifestLimits.OPTION_SETTING_TYPES.includes(setting.type)) {
                 return;
             }
 
-            if (setting.options.length >= ManifestLimits.DROPDOWN_MIN_OPTIONS) {
+            if (!JsonLoader.isArray(setting.options) || setting.options.length >= ManifestLimits.OPTIONS_MINIMUM_COUNT) {
                 return;
             }
 
             const field = "settings[" + index + "].options";
-            const message = "dropdown has " + setting.options.length + " options, expected at least " + ManifestLimits.DROPDOWN_MIN_OPTIONS;
+            const message =
+                setting.type + " has " + setting.options.length + " options, expected at least " + ManifestLimits.OPTIONS_MINIMUM_COUNT;
 
             findings.push(this.manifestFinding(pack, message, field));
         });

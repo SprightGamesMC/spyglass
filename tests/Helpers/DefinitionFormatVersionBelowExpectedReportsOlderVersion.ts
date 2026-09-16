@@ -175,6 +175,20 @@ export default abstract class DefinitionFormatVersionBelowExpectedReportsOlderVe
             expectFinding: true,
         },
         {
+            name: "structure set 1.21.20 equals the lowest version",
+            path: "BP/worldgen/structure_sets/set.json",
+            rootKey: "minecraft:structure_set",
+            formatVersion: "1.21.20",
+            expectFinding: false,
+        },
+        {
+            name: "processor list 1.21.10 is below the lowest 1.21.20",
+            path: "BP/worldgen/processors/proc.json",
+            rootKey: "minecraft:processor_list",
+            formatVersion: "1.21.10",
+            expectFinding: true,
+        },
+        {
             name: "geometry 1.8.0 equals the lowest version",
             path: "RP/models/a.geo.json",
             rootKey: "minecraft:geometry",
