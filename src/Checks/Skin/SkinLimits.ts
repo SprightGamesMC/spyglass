@@ -8,7 +8,6 @@ export default abstract class SkinLimits {
     static readonly PACK_ICON_PREFIX = "pack_icon";
     static readonly FREE_PURCHASE_TYPE = "free";
     static readonly EDGE_WHITESPACE = /^\s|\s$/;
-    static readonly SKIN_NAME_FORBIDDEN = /[0-9_]/;
     static readonly ALLOWED_PURCHASE_TYPES: readonly string[] = ["free", "paid"];
     static readonly ALLOWED_GEOMETRIES: readonly string[] = ["geometry.humanoid.custom", "geometry.humanoid.customSlim"];
     static readonly MODEL_MARKERS: readonly string[] = ["a", "alex", "slim", "customslim", "s", "steve", "custom"];

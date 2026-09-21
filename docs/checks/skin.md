@@ -17,7 +17,6 @@ Runs for: world, skin.
 | SKIN/205 | texture-name-no-model-target | error | Texture name has no model marker |
 | SKIN/206 | loc-key-whitespace | error | .lang value has leading or trailing spaces |
 | SKIN/207 | purchase-type-invalid | error | Skin type is not free or paid |
-| SKIN/208 | skin-name-invalid | error | Skin localization_name has a digit or underscore |
 | SKIN/301 | texture-not-in-skins-json | error | Texture file not referenced by skins.json |
 | SKIN/302 | lang-key-not-in-skins-json | error | Skin .lang key has no matching skin |
 | SKIN/401 | too-many-skins | error | More than 80 skins |
@@ -81,12 +80,6 @@ Fix: remove the leading or trailing spaces.
 A skin `type` field is not `free` or `paid`.
 
 Fix: set `type` to `free` or `paid`.
-
-## SKIN/208 skin-name-invalid
-
-The `localization_name` of a skin entry contains a digit or an underscore. The value is part of the `.lang` key for that skin. The pack level `localization_name` is not checked.
-
-Fix: rename the skin using letters only, and update the matching `skin.` key in every `.lang` file.
 
 ## SKIN/301 texture-not-in-skins-json
 

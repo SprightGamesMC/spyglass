@@ -9,7 +9,6 @@ import LocKeyWhitespace from "./LocKeyWhitespace.js";
 import PurchaseTypeInvalid from "./PurchaseTypeInvalid.js";
 import SkinsJsonInvalid from "./SkinsJsonInvalid.js";
 import SkinsJsonMissing from "./SkinsJsonMissing.js";
-import SkinNameInvalid from "./SkinNameInvalid.js";
 import TextureDuplicate from "./TextureDuplicate.js";
 import TextureInvalidSize from "./TextureInvalidSize.js";
 import TextureNameNoModelTarget from "./TextureNameNoModelTarget.js";
@@ -29,7 +28,6 @@ export default abstract class SkinChecks {
     static readonly TEXTURE_NAME_NO_MODEL_TARGET = 205;
     static readonly LOC_KEY_WHITESPACE = 206;
     static readonly PURCHASE_TYPE_INVALID = 207;
-    static readonly SKIN_NAME_INVALID = 208;
     static readonly TEXTURE_NOT_IN_SKINS_JSON = 301;
     static readonly LANG_KEY_NOT_IN_SKINS_JSON = 302;
     static readonly TOO_MANY_SKINS = 401;
@@ -49,7 +47,6 @@ export default abstract class SkinChecks {
             new TextureNameNoModelTarget(),
             new LocKeyWhitespace(),
             new PurchaseTypeInvalid(),
-            new SkinNameInvalid(),
             new TextureNotInSkinsJson(),
             new LangKeyNotInSkinsJson(),
             new TooManySkins(),

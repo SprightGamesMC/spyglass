@@ -87,5 +87,6 @@ Checks read a file inside a subpack by its path inside that subpack, so folder r
 
 ## Retired IDs
 
-Checks removed because the game no longer has the thing they checked. Numbers are never reused.
+Checks removed because the game no longer has the thing they checked, or because the rule had no source. Numbers are never reused.
 
+- SKIN/208 skin-name-invalid. The rule had no source in the Marketplace requirements. Skin names with a digit or underscore are accepted.

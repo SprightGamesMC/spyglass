@@ -2,6 +2,12 @@
 
 All notable changes to Spyglass. Format follows Keep a Changelog. Versions follow Semantic Versioning as described in [Contributing](docs/contributing.md#versioning-and-releases).
 
+## [0.2.1]
+
+### Removed
+
+- SKIN/208 skin-name-invalid. It reported a skin `localization_name` with a digit or underscore, a rule with no source. The ID is retired.
+
 ## [0.2.0]
 
 ### Changed
