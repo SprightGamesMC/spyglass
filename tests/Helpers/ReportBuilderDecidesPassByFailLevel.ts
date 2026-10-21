@@ -35,7 +35,7 @@ export default abstract class ReportBuilderDecidesPassByFailLevel {
             path: "BP/file" + index + ".json",
         }));
 
-        return ReportBuilder.build("0.0.0", "2026-01-02T03:04:05Z", "input", "addon", "standard", [], findings, failOn);
+        return ReportBuilder.build("0.0.0", "2026-01-02T03:04:05Z", "input", "addon", "standard", [], findings, [], failOn);
     }
 
     static renderText(report: Report): string {

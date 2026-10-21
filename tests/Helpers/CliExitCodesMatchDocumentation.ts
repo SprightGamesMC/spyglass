@@ -8,6 +8,12 @@ import CliRunner from "./Core/CliRunner.js";
 export default abstract class CliExitCodesMatchDocumentation {
     static readonly CASES: readonly ExitCodeCase[] = [
         {
+            name: "no arguments prints usage and exits 0 because a run without a command is a help request",
+            arguments: [],
+            exitCode: 0,
+            stdoutIncludes: "Usage: spyglass check",
+        },
+        {
             name: "help prints usage and exits 0 because help is not a validation run",
             arguments: ["--help"],
             exitCode: 0,
@@ -22,38 +28,50 @@ export default abstract class CliExitCodesMatchDocumentation {
         },
         {
             name: "list rules with skip FILE marks the FILE checks as skipped by --skip",
-            arguments: ["addon", "--list-rules", "--skip", "FILE"],
+            arguments: ["check", "addon", "--list-rules", "--skip", "FILE"],
             exitCode: 0,
             stdoutIncludes: "skipped by --skip",
         },
         {
             name: "content type mod is not a known content type so it is a usage error",
-            arguments: ["mod"],
+            arguments: ["check", "mod"],
             exitCode: 2,
             stderrIncludes: "Usage error",
         },
         {
-            name: "input without a content type is a usage error because content type is required",
-            arguments: ["--input", "."],
+            name: "command run is not a known command so it is a usage error",
+            arguments: ["run"],
+            exitCode: 2,
+            stderrIncludes: "Unknown command",
+        },
+        {
+            name: "content type addon without the check command is a usage error that names spyglass check addon",
+            arguments: ["addon"],
+            exitCode: 2,
+            stderrIncludes: "spyglass check addon",
+        },
+        {
+            name: "check with no content type in the arguments or the config is a usage error because content type is required",
+            arguments: ["check", "--input", "."],
             exitCode: 2,
             stderrIncludes: "Content type is required",
         },
-        { name: "option --unknown is not a known option so it is a usage error", arguments: ["addon", "--unknown"], exitCode: 2 },
+        { name: "option --unknown is not a known option so it is a usage error", arguments: ["check", "addon", "--unknown"], exitCode: 2 },
         {
             name: "skip FILE/999 gives an unknown check ID so it is a usage error",
-            arguments: ["addon", "--skip", "FILE/999"],
+            arguments: ["check", "addon", "--skip", "FILE/999"],
             exitCode: 2,
             stderrIncludes: "Unknown check ID",
         },
         {
             name: "input path that does not exist is a usage error",
-            arguments: ["addon", "--input", "./does-not-exist-anywhere"],
+            arguments: ["check", "addon", "--input", "./does-not-exist-anywhere"],
             exitCode: 2,
             stderrIncludes: "does not exist",
         },
         {
             name: "config path that does not exist is a usage error",
-            arguments: ["addon", "--config", "./missing.config.json"],
+            arguments: ["check", "addon", "--config", "./missing.config.json"],
             exitCode: 2,
         },
     ];
@@ -82,7 +100,7 @@ export default abstract class CliExitCodesMatchDocumentation {
         fs.writeFileSync(archive, "this is not a zip");
 
         try {
-            return CliRunner.run(["addon", "--input", archive]);
+            return CliRunner.run(["check", "addon", "--input", archive]);
         } finally {
             fs.rmSync(folder, { recursive: true, force: true });
         }

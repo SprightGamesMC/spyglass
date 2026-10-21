@@ -12,10 +12,10 @@ npm install --global @sprightgames/spyglass
 
 ## First run
 
-Give it the path to your content and name the content type.
+Run `check` with the content type and the path to your content.
 
 ```
-spyglass addon --input ./MyAddon
+spyglass check addon --input ./MyAddon
 ```
 
 Content types: `addon`, `world`, `skin`, `texture`, `persona`.
@@ -41,10 +41,24 @@ Severity is `error`, `warning`, or `recommendation`, fixed per check. See [Check
 Spyglass exits `1` when any finding is at or above `--fail-on`. The default is `error`.
 
 ```
-spyglass world --input ./MyWorld.zip --layout marketplace --fail-on warning
+spyglass check world --input ./MyWorld.zip --layout marketplace --fail-on warning
 ```
 
 That is the usual setting for a Marketplace submission. See [Command line](cli.md) for `--skip`, the config file, and machine readable output.
+
+## Config file
+
+To run the same check every time, put the settings in `spyglass.config.json` in the folder you run from. Then `spyglass check` is enough.
+
+```json
+{
+    "contentType": "addon",
+    "input": "build/validate",
+    "failOn": "warning"
+}
+```
+
+Paths in the config are relative to the config file. Command line options override the config. See [Config file](cli.md#config-file) for every key.
 
 ## Marketplace submissions
 
@@ -53,7 +67,7 @@ Add `--layout marketplace` when the input is a submission zip. That turns on the
 ## In CI
 
 ```
-npx @sprightgames/spyglass addon --input ./MyAddon --fail-on warning --format json --output ./reports
+npx @sprightgames/spyglass check addon --input ./MyAddon --fail-on warning --format json --output ./reports
 ```
 
 Report goes to stdout by default. Progress and the summary go to stderr, so `> report.txt` gives a file with only the report. `--output` writes the report into a folder instead.

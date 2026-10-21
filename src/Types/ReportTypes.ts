@@ -12,6 +12,11 @@ export interface SeverityCounts {
     readonly recommendation: number;
 }
 
+export interface IgnoredFinding {
+    readonly finding: Finding;
+    readonly reason: string;
+}
+
 export interface Report {
     readonly schemaVersion: number;
     readonly toolVersion: string;
@@ -21,6 +26,7 @@ export interface Report {
     readonly layout: Layout;
     readonly checks: readonly ResolvedCheck[];
     readonly findings: readonly Finding[];
+    readonly ignored: readonly IgnoredFinding[];
     readonly counts: SeverityCounts;
     readonly countsByGroup: Readonly<Record<string, SeverityCounts>>;
     readonly passed: boolean;

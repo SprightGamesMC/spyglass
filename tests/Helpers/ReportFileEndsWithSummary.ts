@@ -34,7 +34,7 @@ export default abstract class ReportFileEndsWithSummary {
 
         fs.rmSync(outputPath, { recursive: true, force: true });
 
-        const result = CliRunner.run(["addon", "--input", inputPath, "--format", entry.format, "--output", outputPath]);
+        const result = CliRunner.run(["check", "addon", "--input", inputPath, "--format", entry.format, "--output", outputPath]);
 
         if (result.exitCode !== 0 && result.exitCode !== 1) {
             throw new Error("Report run exited " + result.exitCode + ": " + result.stderr);

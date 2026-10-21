@@ -13,19 +13,32 @@ npm install --global @sprightgames/spyglass
 Or run without installing:
 
 ```
-npx @sprightgames/spyglass addon --input ./MyAddon
+npx @sprightgames/spyglass check addon --input ./MyAddon
 ```
 
 ## Use
 
 ```
-spyglass addon --input ./MyAddon
-spyglass world --input ./MyWorld.mctemplate
-spyglass skin --input ./MySkins --layout marketplace --fail-on warning
+spyglass check addon --input ./MyAddon
+spyglass check world --input ./MyWorld.mctemplate
+spyglass check skin --input ./MySkins --layout marketplace --fail-on warning
 spyglass --list-rules
 ```
 
-The first argument is the content type: `addon`, `world`, `skin`, `texture`, or `persona`. `--input` takes a folder, a `.mcaddon`, `.mctemplate`, `.mcworld`, `.mcpack`, `.mcpersona`, or a `.zip`.
+The content type follows `check`: `addon`, `world`, `skin`, `texture`, or `persona`. `--input` takes a folder, a `.mcaddon`, `.mctemplate`, `.mcworld`, `.mcpack`, `.mcpersona`, or a `.zip`. `spyglass` with no command prints the help.
+
+Every setting can also go in `spyglass.config.json` in the current folder. Command line options override it.
+
+```json
+{
+    "$schema": "https://unpkg.com/@sprightgames/spyglass@0.3.0/schema/spyglass.config.schema.json",
+    "contentType": "addon",
+    "input": "build/validate",
+    "failOn": "warning"
+}
+```
+
+With this file, `spyglass check` validates `build/validate` as an add-on. The `$schema` line is optional. It lets an editor complete keys and show allowed values.
 
 The exit code is `0` when nothing at or above `--fail-on` was found and `1` otherwise, so the command can be used directly in CI to block a build.
 

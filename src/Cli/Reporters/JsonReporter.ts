@@ -1,3 +1,4 @@
+import type { Finding } from "../../Types/CheckTypes.js";
 import type { Report } from "../../Types/ReportTypes.js";
 import CheckIds from "../../Checks/CheckIds.js";
 
@@ -20,17 +21,22 @@ export default abstract class JsonReporter {
                 skipped: check.skipped,
                 skip_reason: check.skipReason,
             })),
-            findings: report.findings.map((finding) => ({
-                id: finding.id,
-                slug: finding.slug,
-                severity: finding.severity,
-                message: finding.message,
-                path: finding.path,
-                pack: finding.pack,
-                location: finding.location,
-            })),
+            findings: report.findings.map(JsonReporter.renderFinding),
+            ignored: report.ignored.map((entry) => ({ ...JsonReporter.renderFinding(entry.finding), reason: entry.reason })),
         };
 
         return JSON.stringify(output, null, 2) + "\n";
+    }
+
+    private static renderFinding(finding: Finding): Record<string, unknown> {
+        return {
+            id: finding.id,
+            slug: finding.slug,
+            severity: finding.severity,
+            message: finding.message,
+            path: finding.path,
+            pack: finding.pack,
+            location: finding.location,
+        };
     }
 }

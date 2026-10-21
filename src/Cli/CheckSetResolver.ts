@@ -13,7 +13,11 @@ export default abstract class CheckSetResolver {
         commandLineSkips: readonly SkipSelector[],
         commandLineSeverities: readonly SeverityOverride[]
     ): ResolvedCheck[] {
-        for (const skip of [...config.skips.map((entry) => entry.selector), ...commandLineSkips]) {
+        for (const skip of [
+            ...config.skips.map((entry) => entry.selector),
+            ...config.ignores.map((entry) => entry.selector),
+            ...commandLineSkips,
+        ]) {
             CheckSetResolver.assertKnown(definitions, skip);
         }
 
@@ -28,7 +32,7 @@ export default abstract class CheckSetResolver {
         );
     }
 
-    private static matches(selector: SkipSelector, id: string): boolean {
+    static matches(selector: SkipSelector, id: string): boolean {
         const number = CheckIds.numberOf(id);
 
         if (CheckIds.groupOf(id) !== selector.group || number === undefined) {

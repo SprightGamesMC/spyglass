@@ -19,8 +19,8 @@ for (const entry of CliExitCodesMatchDocumentation.CASES) {
 }
 
 test("manifest that does not parse is a FILE/201 finding with exit 1 and fail on none keeps exit 0", () => {
-    const failed = CliExitCodesMatchDocumentation.runOnBrokenJsonFolder(["addon"]);
-    const passed = CliExitCodesMatchDocumentation.runOnBrokenJsonFolder(["addon", "--fail-on", "none"]);
+    const failed = CliExitCodesMatchDocumentation.runOnBrokenJsonFolder(["check", "addon"]);
+    const passed = CliExitCodesMatchDocumentation.runOnBrokenJsonFolder(["check", "addon", "--fail-on", "none"]);
 
     assert.equal(failed.exitCode, 1, failed.stderr);
     assert.match(failed.stdout, /FILE\/201/);

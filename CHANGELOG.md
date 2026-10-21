@@ -2,6 +2,26 @@
 
 All notable changes to Spyglass. Format follows Keep a Changelog. Versions follow Semantic Versioning as described in [Contributing](docs/contributing.md#versioning-and-releases).
 
+## [0.3.0]
+
+### Added
+
+- Config key `ignore`. Each entry removes the findings of the selected checks that match an optional `path` and `pack` pattern and an optional `field`, with a required `reason`. The checks still run. Ignored findings do not count for `--fail-on`.
+- JSON report field `ignored` with each ignored finding and its reason. `schema_version` stays 1.
+- The summary line ends with the ignored count when a finding was ignored.
+- A notice on stderr for an ignore entry that matched no finding in a check that ran.
+- `check` command. `spyglass check addon` validates an add-on.
+- Config keys `contentType`, `input`, `layout`, `output`, `format`, `verbosity`, and `noColor`. `input` and `output` are relative to the config file. Each setting comes from the command line, then the config, then the default, so `spyglass check` can take every setting from `spyglass.config.json`.
+- JSON schema for the config file at `schema/spyglass.config.schema.json` in the package. The config accepts a `$schema` key that points to it.
+
+### Changed
+
+- The content type follows the `check` command. `spyglass addon` is a usage error that names `spyglass check addon`.
+- `spyglass` with no command prints the help and exits `0`.
+- `--list-rules` with a content type is `spyglass check <content type> --list-rules`.
+- An unknown key in the config file is a usage error. Before, it was ignored.
+- TEXTURE/304 checks every texture that supports a texture set, not only textures under `textures/blocks` and `textures/entity`. A texture is checked when it replaces a vanilla texture that has a texture set, is in a vanilla folder with texture sets, or is referred to by a texture file, client entity, attachable, or particle. Up to two add-on folders under `textures` are skipped when finding the folder. Textures in `colormap`, `environment`, `gui`, `map`, `misc`, `persona_thumbnails`, and `ui` are not checked.
+
 ## [0.2.1]
 
 ### Removed

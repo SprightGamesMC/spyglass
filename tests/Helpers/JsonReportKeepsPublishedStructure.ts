@@ -6,6 +6,7 @@ import JsonReporter from "../../src/Cli/Reporters/JsonReporter.js";
 export default abstract class JsonReportKeepsPublishedStructure {
     static readonly SCHEMA_VERSION = ReportBuilder.SCHEMA_VERSION;
     static readonly STARTED_AT = "2026-01-02T03:04:05Z";
+    static readonly IGNORE_REASON = "Texture path is built at run time by scripts";
     static readonly EXPECTATIONS: readonly ShapeExpectation[] = [
         {
             name: "report",
@@ -21,12 +22,14 @@ export default abstract class JsonReportKeepsPublishedStructure {
                 "counts_by_group",
                 "checks",
                 "findings",
+                "ignored",
             ],
         },
         { name: "counts", keys: ["error", "warning", "recommendation"] },
         { name: "check", keys: ["id", "slug", "severity", "skipped", "skip_reason"] },
         { name: "finding", keys: ["id", "slug", "severity", "message", "path", "pack", "location"] },
         { name: "location", keys: ["field", "line"] },
+        { name: "ignored finding", keys: ["id", "slug", "severity", "message", "path", "pack", "location", "reason"] },
     ];
 
     static render(findings: readonly Finding[]): Record<string, unknown> {
@@ -44,6 +47,7 @@ export default abstract class JsonReportKeepsPublishedStructure {
             "standard",
             [check],
             findings,
+            findings.map((finding) => ({ finding, reason: JsonReportKeepsPublishedStructure.IGNORE_REASON })),
             "error"
         );
 
@@ -76,6 +80,8 @@ export default abstract class JsonReportKeepsPublishedStructure {
                 return Object.keys((rendered.checks as Record<string, unknown>[])[0]);
             case "finding":
                 return Object.keys((rendered.findings as Record<string, unknown>[])[0]);
+            case "ignored finding":
+                return Object.keys((rendered.ignored as Record<string, unknown>[])[0]);
             case "location":
                 return Object.keys((rendered.findings as Record<string, unknown>[])[0].location as Record<string, unknown>);
             default:

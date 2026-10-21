@@ -1,6 +1,6 @@
 {
     "name": "@sprightgames/spyglass",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "description": "Validation CLI for Minecraft Bedrock content.",
     "license": "MIT",
     "keywords": [
@@ -38,7 +38,8 @@
         "spyglass": "dist/Cli.js"
     },
     "files": [
-        "dist"
+        "dist",
+        "schema"
     ],
     "engines": {
         "node": ">=22"

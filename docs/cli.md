@@ -1,15 +1,31 @@
 # Command line
 
 ```
-spyglass <content type> [options]
-spyglass --list-rules [content type] [options]
+spyglass check [content type] [options]
+spyglass --list-rules [options]
+spyglass check [content type] --list-rules [options]
 spyglass --help
 spyglass --version
 ```
 
-`-h` is short for `--help` and `-v` is short for `--version`.
+`-h` is short for `--help` and `-v` is short for `--version`. `spyglass` with no command prints the help and exits `0`.
 
-Content type is one of `addon`, `world`, `skin`, `texture`, `persona`.
+## Settings order
+
+Each setting comes from the command line first, then the config file, then the default. Every option except `--config`, `--help`, `--version`, and `--list-rules` can also be set in the config file. See [Config file](#config-file).
+
+## Commands
+
+### `check [content type]`
+
+Validate the input. Content type is one of `addon`, `world`, `skin`, `texture`, `persona`. It can be given after `check` or as `contentType` in the config file. When neither gives it, the run is a usage error.
+
+```
+spyglass check addon --input ./MyAddon
+spyglass check
+```
+
+The second form takes the content type, the input, and every other setting from `spyglass.config.json`.
 
 ## Input
 
@@ -52,7 +68,7 @@ Default: `spyglass.config.json` in the current folder when it exists. The input 
 Change the severity of one check or one group. Repeatable. Levels: `error`, `warning`, `recommendation`. To turn a check off use `--skip`.
 
 ```
-spyglass addon --severity PACK/301=recommendation --severity LANG=error
+spyglass check addon --severity PACK/301=recommendation --severity LANG=error
 ```
 
 ### `--fail-on <error|warning|recommendation|none>`
@@ -79,13 +95,13 @@ Elapsed: 412 ms
 Result: fail
 ```
 
-`Run at` is the UTC time the run started, ISO 8601 to the second, the same value as `started_at` in the JSON report. `Elapsed` is wall clock time, in milliseconds below one second and in seconds above it. `Result` is always the last line. A group line appears only for a group with at least one finding.
+`Run at` is the UTC time the run started, ISO 8601 to the second, the same value as `started_at` in the JSON report. When the config file ignored at least one finding, the `Summary` line ends with the ignored count, for example `Summary: 1 errors, 1 warnings, 1 recommendations, 2 ignored`. Ignored findings are not in the group lines. `Elapsed` is wall clock time, in milliseconds below one second and in seconds above it. `Result` is always the last line. A group line appears only for a group with at least one finding.
 
 ### `--format <text|json|csv>`
 
 - `text`: readable, one finding per line.
-- `json`: full report. The header records `schema_version`, tool version, `started_at`, input, and the resolved check set. `schema_version` increments on any change that removes or renames a field.
-- `csv`: one finding per row.
+- `json`: full report. The header records `schema_version`, tool version, `started_at`, input, and the resolved check set. `schema_version` increments on any change that removes or renames a field. `ignored` lists the findings removed by the config `ignore` key, each with the fields of a finding and the `reason` of the entry that matched it.
+- `csv`: one finding per row. Ignored findings are not included.
 
 Default: `text`.
 
@@ -122,11 +138,23 @@ Each stream is decided separately. Findings on stdout are colored only when stdo
 Print one line per check with tab separated columns: ID, slug, default severity, effective severity with the override source in parentheses, status (`run` or `skip` followed by the skip reason), and description. Reads no content.
 
 - Alone: the full catalog with defaults.
-- With a content type, `--layout`, `--config`, and `--skip`: the resolved set. Shows what would run and why each skipped check is skipped, including the config `reason`.
+- With `check` and a content type, or a `contentType` in the config, and with `--layout`, `--config`, and `--skip`: the resolved set. Shows what would run and why each skipped check is skipped, including the config `reason`.
 
 ## Config file
 
-JSON, comments allowed. Command line options override the config file.
+JSON, comments allowed. Command line options override the config file. The config file overrides the defaults.
+
+```json
+{
+    "contentType": "addon",
+    "input": "build/validate",
+    "failOn": "warning"
+}
+```
+
+With this file in the current folder, `spyglass check` validates `build/validate` as an add-on.
+
+A full example:
 
 ```json
 {
@@ -139,15 +167,57 @@ JSON, comments allowed. Command line options override the config file.
         "LANG": "warning",
         "DEFINITION/601": "error"
     },
+    "ignore": [
+        {
+            "id": "PACK/301",
+            "path": "RP/textures/entity/boss_phase_*.png",
+            "reason": "Texture path is built at run time by scripts"
+        }
+    ],
     "failOn": "warning"
 }
 ```
 
-| Key | Value |
-|---|---|
-| `skip` | Array. Each entry is a selector string or an object with `id` and optional `reason`. Same selector forms as `--skip`. |
-| `severity` | Object of ID or group to level. |
-| `failOn` | One of `error`, `warning`, `recommendation`, `none`. |
+| Key | Value | Default | Option |
+|---|---|---|---|
+| `contentType` | One of `addon`, `world`, `skin`, `texture`, `persona`. | none | content type after `check` |
+| `input` | String. Folder or packaged file to validate. | current folder | `--input` |
+| `layout` | One of `standard`, `marketplace`. | `standard` | `--layout` |
+| `output` | String. Folder for the report file. | stdout | `--output` |
+| `format` | One of `text`, `json`, `csv`. | `text` | `--format` |
+| `verbosity` | One of `silent`, `summary`, `normal`, `verbose`, `debug`. | `normal` | `--verbosity` |
+| `noColor` | Boolean. | `false` | `--no-color` |
+| `skip` | Array. Each entry is a selector string or an object with `id` and optional `reason`. Same selector forms as `--skip`. | none | `--skip` |
+| `severity` | Object of ID or group to level. | none | `--severity` |
+| `ignore` | Array of objects. Removes single findings. See [Ignoring findings](#ignoring-findings). | none | none |
+| `failOn` | One of `error`, `warning`, `recommendation`, `none`. | `error` | `--fail-on` |
+
+- `input` and `output` are relative to the folder of the config file, not the current folder. Paths given on the command line are relative to the current folder.
+- `skip` and `severity` are combined with `--skip` and `--severity`. A `--severity` for the same ID wins.
+- A key that is not in the table, or a key with a wrong type or value, is a usage error.
+- `$schema` is also allowed, so an editor can load the JSON schema for the config file. The package contains it at `schema/spyglass.config.schema.json`. The schema lists every key with its allowed values and default.
+- A config error is reported at the `--verbosity` given on the command line, or `normal` when none is given.
+
+### Ignoring findings
+
+`skip` removes a whole check. `ignore` removes only the findings that match an entry, and the check still runs. Use it for a finding that is correct for the content as written but not for how the content is used, such as a texture that only a script names.
+
+| Field | Required | Matches |
+|---|---|---|
+| `id` | yes | Selector string, same forms as `--skip`. |
+| `reason` | yes | Not matched. Text that says why. Must not be empty. |
+| `path` | no | Pattern for the file path the finding reports. |
+| `pack` | no | Pattern for the pack folder the finding reports. |
+| `field` | no | Exact field path the finding reports. |
+
+- A finding is ignored when its ID matches `id` and it matches every other field the entry gives. An entry with only `id` and `reason` ignores every finding of those checks.
+- A finding without a path, pack, or field never matches an entry that gives that field.
+- When two entries match a finding, the first one in the array gives the reason.
+- Any field not in the table is an error, so a misspelled field never makes an entry match more findings.
+- `path` and `pack` are relative to the input, with `/` between folders, the same text the report shows. `*` matches any characters except `/`, `**` matches any characters including `/`, `**/` also matches no folder, and `?` matches one character except `/`. `\` is read as `/`. Matching is case sensitive and covers the whole path.
+- Ignored findings do not count for `--fail-on`, the counts, or the group lines. They are listed in the JSON report under `ignored` and printed at `--verbosity verbose`.
+- An entry that ignored nothing in a run prints a notice to stderr, so an entry for a fixed or renamed file is found. There is no notice when none of the checks the entry selects ran.
+- Unknown IDs are an error, as in `skip`.
 
 ## Environment
 
@@ -164,7 +234,7 @@ Both lookups have a ten second timeout and neither one stops the run. When the g
 |---|---|
 | `0` | Validation ran. No finding at or above `--fail-on`. |
 | `1` | Validation ran. At least one finding at or above `--fail-on`. |
-| `2` | Usage error. Unknown content type or option, unknown ID in `--skip`, config does not parse, input path does not exist. Nothing was validated. |
+| `2` | Usage error. Unknown command, content type, or option, no content type for `check`, unknown ID in `--skip`, config does not parse, input path does not exist. Nothing was validated. |
 | `3` | Tool error. Archive could not be read or opened, vanilla data could not be read, unexpected exception. No report is written. |
 
 - Anything wrong inside the content is a finding, including a file that cannot be read (`FILE/207`). Only failures of the environment around the content are tool errors.

@@ -1,6 +1,6 @@
 import type { CheckContext, ContentType, ResolvedCheck } from "./Types/CheckTypes.js";
-import type { CliIo, CliOptions } from "./Types/CliTypes.js";
-import type { FailOn, Report, Verbosity } from "./Types/ReportTypes.js";
+import type { CliIo, CliOptions, ConfigFile, FilteredFindings, RunSettings } from "./Types/CliTypes.js";
+import type { Report, Verbosity } from "./Types/ReportTypes.js";
 import fs from "node:fs";
 import path from "node:path";
 import { performance } from "node:perf_hooks";
@@ -11,6 +11,7 @@ import ArgumentParser from "./Cli/ArgumentParser.js";
 import CheckSetResolver from "./Cli/CheckSetResolver.js";
 import ConfigLoader from "./Cli/ConfigLoader.js";
 import ExitCodes from "./Cli/ExitCodes.js";
+import FindingFilter from "./Cli/FindingFilter.js";
 import Logger from "./Cli/Logger.js";
 import ReportBuilder from "./Cli/ReportBuilder.js";
 import CsvReporter from "./Cli/Reporters/CsvReporter.js";
@@ -24,12 +25,14 @@ import ModelBuilder from "./Model/ModelBuilder.js";
 import StorageFactory from "./Storage/StorageFactory.js";
 
 export default abstract class Main {
-    static readonly TOOL_VERSION = "0.2.1";
+    static readonly TOOL_VERSION = "0.3.0";
     private static readonly DEFAULT_VERBOSITY: Verbosity = "normal";
     private static readonly FINDINGS_HIDDEN_VERBOSITIES: readonly Verbosity[] = ["silent", "summary"];
     private static readonly MILLISECONDS_SUFFIX = /\.\d{3}Z$/;
     private static readonly HELP_TEXT = [
-        "Usage: spyglass <addon|world|skin|texture|persona> [options]",
+        "Usage: spyglass check [contentType] [options]",
+        "",
+        "contentType: addon, world, skin, texture, or persona. Default: contentType in the config",
         "",
         "Options:",
         "  --input <path>            Folder or archive to validate. Default: current directory",
@@ -45,6 +48,8 @@ export default abstract class Main {
         "  --list-rules              Print the check catalog or the resolved check set",
         "  --version, -v",
         "  --help, -h",
+        "",
+        "Every option except --config, --help, --version, and --list-rules can also be set in the config.",
     ].join("\n");
 
     static async run(argv: readonly string[], io: CliIo, workingDirectory: string, environment: NodeJS.ProcessEnv): Promise<number> {
@@ -53,38 +58,57 @@ export default abstract class Main {
         try {
             const options = ArgumentParser.parse(argv);
 
-            logger = Logger.forVerbosity(options.verbosity, io.writeError);
+            if (options.help || (options.command === undefined && !options.version && !options.listRules)) {
+                io.writeOut(Main.HELP_TEXT + "\n");
 
-            return await Main.execute(options, logger, io, workingDirectory, environment);
+                return ExitCodes.PASS;
+            }
+
+            if (options.version) {
+                io.writeOut(Main.TOOL_VERSION + "\n");
+
+                return ExitCodes.PASS;
+            }
+
+            logger = Logger.forVerbosity(options.verbosity ?? Main.DEFAULT_VERBOSITY, io.writeError);
+
+            const config = ConfigLoader.load(options.configPath, workingDirectory);
+            const settings = Main.combine(options, config);
+
+            logger = Logger.forVerbosity(settings.verbosity, io.writeError);
+
+            return await Main.execute(options, settings, config, logger, io, workingDirectory, environment);
         } catch (error) {
             return Main.handleError(error, logger);
         }
     }
 
+    private static combine(options: CliOptions, config: ConfigFile): RunSettings {
+        return {
+            contentType: options.contentType ?? config.contentType,
+            input: options.input ?? config.input ?? ".",
+            layout: options.layout ?? config.layout ?? "standard",
+            output: options.output ?? config.output,
+            format: options.format ?? config.format ?? "text",
+            verbosity: options.verbosity ?? config.verbosity ?? Main.DEFAULT_VERBOSITY,
+            noColor: options.noColor ?? config.noColor ?? false,
+            failOn: options.failOn ?? config.failOn ?? "error",
+        };
+    }
+
     private static async execute(
         options: CliOptions,
+        settings: RunSettings,
+        config: ConfigFile,
         logger: Logger,
         io: CliIo,
         workingDirectory: string,
         environment: NodeJS.ProcessEnv
     ): Promise<number> {
-        if (options.help) {
-            io.writeOut(Main.HELP_TEXT + "\n");
-
-            return ExitCodes.PASS;
-        }
-
-        if (options.version) {
-            io.writeOut(Main.TOOL_VERSION + "\n");
-
-            return ExitCodes.PASS;
-        }
-
-        const config = ConfigLoader.load(options.configPath, workingDirectory);
         const resolved = CheckSetResolver.resolve(
             CheckRegistry.definitions(),
-            options.contentType,
-            options.layout,
+            settings.contentType,
+            settings.layout,
             config,
             options.skips,
             options.severityOverrides
@@ -96,41 +120,44 @@ export default abstract class Main {
             return ExitCodes.PASS;
         }
 
-        if (options.contentType === undefined) {
-            throw new UsageError("Content type is required. One of " + ArgumentParser.CONTENT_TYPES.join(", "));
+        if (settings.contentType === undefined) {
+            throw new UsageError(
+                "Content type is required. Give it after check, as in spyglass check addon, or as contentType in the config. One of " +
+                    ArgumentParser.CONTENT_TYPES.join(", ")
+            );
         }
 
         const startedAt = Main.startTimestamp();
         const startedMilliseconds = performance.now();
         const report = await Main.validate(
-            options,
-            options.contentType,
+            settings,
+            settings.contentType,
             logger,
             workingDirectory,
             environment,
             resolved,
-            config.failOn,
+            config,
             startedAt
         );
 
-        Main.writeReport(report, options, logger, io, workingDirectory, performance.now() - startedMilliseconds);
+        Main.writeReport(report, settings, logger, io, workingDirectory, performance.now() - startedMilliseconds);
 
         return report.passed ? ExitCodes.PASS : ExitCodes.FAIL;
     }
 
     private static async validate(
-        options: CliOptions,
+        settings: RunSettings,
         contentType: ContentType,
         logger: Logger,
         workingDirectory: string,
         environment: NodeJS.ProcessEnv,
         resolved: readonly ResolvedCheck[],
-        configFailOn: FailOn | undefined,
+        config: ConfigFile,
         startedAt: string
     ): Promise<Report> {
-        const inputPath = path.resolve(workingDirectory, options.input);
+        const inputPath = path.resolve(workingDirectory, settings.input);
 
-        logger.verbose("Validating " + inputPath + " as " + contentType + " with " + options.layout + " layout");
+        logger.verbose("Validating " + inputPath + " as " + contentType + " with " + settings.layout + " layout");
 
         const storage = await StorageFactory.open(inputPath);
         const needsNpm = resolved.some(
@@ -142,7 +169,7 @@ export default abstract class Main {
         logger.verbose("Beta module versions " + Main.describeBetaModules(versionSources.betaModuleVersions));
 
         const loaders = new Loaders(storage, versionSources, undefined, logger);
-        const model = await new ModelBuilder(storage, options.layout, loaders.json).build();
+        const model = await new ModelBuilder(storage, settings.layout, loaders.json).build();
         const context: CheckContext = { model, loaders, contentType };
 
         logger.debug(Main.describeModel(model));
@@ -151,9 +178,31 @@ export default abstract class Main {
             logger.verbose(entry.id + " " + entry.findingCount + " findings " + entry.durationMilliseconds.toFixed(1) + " ms");
         });
 
-        const failOn = options.failOn ?? configFailOn ?? "error";
+        const filtered = FindingFilter.apply(findings, config.ignores, resolved);
 
-        return ReportBuilder.build(Main.TOOL_VERSION, startedAt, inputPath, contentType, options.layout, resolved, findings, failOn);
+        Main.logIgnores(filtered, logger);
+
+        return ReportBuilder.build(
+            Main.TOOL_VERSION,
+            startedAt,
+            inputPath,
+            contentType,
+            settings.layout,
+            resolved,
+            filtered.kept,
+            filtered.ignored,
+            settings.failOn
+        );
+    }
+
+    private static logIgnores(filtered: FilteredFindings, logger: Logger): void {
+        for (const entry of filtered.ignored) {
+            logger.verbose("Ignored " + entry.finding.id + " " + (entry.finding.path ?? "") + ": " + entry.reason);
+        }
+
+        for (const ignore of filtered.unused) {
+            logger.summary("Notice: config ignore entry " + FindingFilter.describe(ignore) + " matched no finding");
+        }
     }
 
     private static describeBetaModules(versions: Readonly<Record<string, string>>): string {
@@ -175,51 +224,51 @@ export default abstract class Main {
 
     private static writeReport(
         report: Report,
-        options: CliOptions,
+        settings: RunSettings,
         logger: Logger,
         io: CliIo,
         workingDirectory: string,
         elapsedMilliseconds: number
     ): void {
-        const color = !options.noColor && io.isTerminal && options.output === undefined;
-        const text = Main.renderReport(report, options, color);
+        const color = !settings.noColor && io.isTerminal && settings.output === undefined;
+        const text = Main.renderReport(report, settings, color);
 
-        if (options.output === undefined) {
-            if (Main.showsFindings(options)) {
+        if (settings.output === undefined) {
+            if (Main.showsFindings(settings)) {
                 io.writeOut(text);
             }
         } else {
-            Main.writeReportFile(Main.withSummary(text, report, options, elapsedMilliseconds), options, workingDirectory);
+            Main.writeReportFile(Main.withSummary(text, report, settings, elapsedMilliseconds), settings, workingDirectory);
         }
 
-        logger.summary(TextReporter.renderSummary(report, elapsedMilliseconds, !options.noColor && io.isErrorTerminal));
+        logger.summary(TextReporter.renderSummary(report, elapsedMilliseconds, !settings.noColor && io.isErrorTerminal));
     }
 
-    private static withSummary(text: string, report: Report, options: CliOptions, elapsedMilliseconds: number): string {
-        if (options.format !== "text") {
+    private static withSummary(text: string, report: Report, settings: RunSettings, elapsedMilliseconds: number): string {
+        if (settings.format !== "text") {
             return text;
         }
 
         return text + TextReporter.renderSummary(report, elapsedMilliseconds, false) + "\n";
     }
 
-    private static showsFindings(options: CliOptions): boolean {
-        return options.format !== "text" || !Main.FINDINGS_HIDDEN_VERBOSITIES.includes(options.verbosity);
+    private static showsFindings(settings: RunSettings): boolean {
+        return settings.format !== "text" || !Main.FINDINGS_HIDDEN_VERBOSITIES.includes(settings.verbosity);
     }
 
-    private static writeReportFile(text: string, options: CliOptions, workingDirectory: string): void {
-        const folder = path.resolve(workingDirectory, options.output ?? "");
+    private static writeReportFile(text: string, settings: RunSettings, workingDirectory: string): void {
+        const folder = path.resolve(workingDirectory, settings.output ?? "");
 
         try {
             fs.mkdirSync(folder, { recursive: true });
-            fs.writeFileSync(path.join(folder, "spyglass.report." + Main.extensionFor(options)), text);
+            fs.writeFileSync(path.join(folder, "spyglass.report." + Main.extensionFor(settings)), text);
         } catch (error) {
             throw new ToolError("Could not write report to " + folder, error);
         }
     }
 
-    private static renderReport(report: Report, options: CliOptions, color: boolean): string {
-        switch (options.format) {
+    private static renderReport(report: Report, settings: RunSettings, color: boolean): string {
+        switch (settings.format) {
             case "json":
                 return JsonReporter.render(report);
             case "csv":
@@ -229,8 +278,8 @@ export default abstract class Main {
         }
     }
 
-    private static extensionFor(options: CliOptions): string {
-        return options.format === "text" ? "txt" : options.format;
+    private static extensionFor(settings: RunSettings): string {
+        return settings.format === "text" ? "txt" : settings.format;
     }
 
     private static handleError(error: unknown, logger: Logger): number {

@@ -49,6 +49,7 @@ export default abstract class TextSummaryPutsResultLastAndColorsCounts {
             "standard",
             [],
             findings,
+            [],
             "error"
         );
     }

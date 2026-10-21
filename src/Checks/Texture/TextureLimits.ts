@@ -1,4 +1,5 @@
 import type { ContentType } from "../../Types/CheckTypes.js";
+import type { ItemKind } from "../../Types/ModelTypes.js";
 import type { TierLimitTable } from "../../Types/TextureTypes.js";
 import TextureFormat from "../../Loaders/TextureFormat.js";
 import TextureHandleLoader from "../../Loaders/TextureHandleLoader.js";
@@ -22,7 +23,34 @@ export default abstract class TextureLimits {
     };
     static readonly PBR_CAPABILITY = ManifestLimits.PBR_CAPABILITY;
     static readonly BLOCK_ATLAS_PREFIX = TextureHandleLoader.BLOCK_ATLAS_PREFIX;
-    static readonly ENTITY_PREFIX = "textures/entity/";
+    static readonly TEXTURE_SET_SOURCE_KINDS: readonly ItemKind[] = [
+        "terrain_texture",
+        "item_texture",
+        "flipbook_textures",
+        "entity_resource",
+        "attachable",
+        "particle",
+    ];
+    static readonly TEXTURE_SET_FOLDERS: readonly string[] = [
+        "blocks",
+        "entity",
+        "items",
+        "models",
+        "painting",
+        "particle",
+        "particles",
+        "trims",
+    ];
+    static readonly NO_TEXTURE_SET_FOLDERS: readonly string[] = [
+        "colormap",
+        "environment",
+        "gui",
+        "map",
+        "misc",
+        "persona_thumbnails",
+        "ui",
+    ];
+    static readonly ADDON_FOLDER_DEPTH = 2;
     static readonly TEXTURE_SET_SUFFIX = ".texture_set.json";
     static readonly TEXTURE_SET_ROOT = TextureFormat.TEXTURE_SET_ROOT;
     static readonly DEPRECATED_BLOCK_TEXTURES: readonly string[] = [

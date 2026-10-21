@@ -1,5 +1,5 @@
 import type { ContentType, Finding, Layout, ResolvedCheck } from "../Types/CheckTypes.js";
-import type { FailOn, Report, SeverityCounts } from "../Types/ReportTypes.js";
+import type { FailOn, IgnoredFinding, Report, SeverityCounts } from "../Types/ReportTypes.js";
 import CheckIds from "../Checks/CheckIds.js";
 
 export default abstract class ReportBuilder {
@@ -13,6 +13,7 @@ export default abstract class ReportBuilder {
         layout: Layout,
         checks: readonly ResolvedCheck[],
         findings: readonly Finding[],
+        ignored: readonly IgnoredFinding[],
         failOn: FailOn
     ): Report {
         const counts = ReportBuilder.count(findings);
@@ -33,6 +34,7 @@ export default abstract class ReportBuilder {
             layout,
             checks,
             findings,
+            ignored,
             counts,
             countsByGroup,
             passed: ReportBuilder.passes(counts, failOn),

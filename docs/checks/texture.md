@@ -67,7 +67,19 @@ Fix: move the shared textures into the base pack and keep only the textures that
 
 ## TEXTURE/304 texture-without-texture-set
 
-The pack declares the `pbr` capability and a block or entity texture has no matching texture set. Companion files are exempt: a texture a texture set lists as a layer other than `color`, or a name ending in `_mer`, `_mers`, `_normal`, or `_heightmap`. Other texture kinds are not checked.
+The pack declares the `pbr` capability and a texture that supports a texture set has no matching texture set.
+
+The folder of a texture is the first folder under `textures` with a vanilla folder name. Up to two folders before it are skipped, so an add-on folder such as `textures/<team>/<content>/` is treated like `textures/`. For example, `textures/example/sample/entity/cow.png` is in the `entity` folder.
+
+The vanilla resource pack has texture sets in these folders: `blocks`, `entity`, `items`, `models`, `painting`, `particle`, `particles`, and `trims`. It has none in these folders: `colormap`, `environment`, `gui`, `map`, `misc`, `persona_thumbnails`, and `ui`.
+
+A texture in a folder without texture sets is not checked. Any other texture is checked when one of these is true:
+
+- It replaces a vanilla texture that has a vanilla texture set.
+- It is in a folder with texture sets.
+- `terrain_texture.json`, `item_texture.json`, `flipbook_textures.json`, or a client entity, attachable, or particle file in any pack refers to it.
+
+Companion files are exempt: a texture a texture set lists as a layer other than `color`, or a name ending in `_mer`, `_mers`, `_normal`, or `_heightmap`. Paths are compared in lower case, with forward slashes, and without the file extension.
 
 Fix: add a `texture_set.json` next to the texture with at least a `color` layer, or remove the `pbr` capability.
 

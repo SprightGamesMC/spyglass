@@ -20,7 +20,7 @@ export default abstract class TextReporter {
     static renderSummary(report: Report, elapsedMilliseconds: number, color: boolean): string {
         const lines = [
             TextReporter.gray("Run at " + report.startedAt, color),
-            "Summary: " + TextReporter.renderCounts(report.counts, color),
+            "Summary: " + TextReporter.renderCounts(report.counts, color) + TextReporter.renderIgnored(report),
         ];
 
         for (const [group, counts] of Object.entries(report.countsByGroup).sort(([left], [right]) => left.localeCompare(right))) {
@@ -76,6 +76,10 @@ export default abstract class TextReporter {
             TextReporter.renderCount(counts.warning, "warnings", "warning", color),
             TextReporter.renderCount(counts.recommendation, "recommendations", "recommendation", color),
         ].join(", ");
+    }
+
+    private static renderIgnored(report: Report): string {
+        return report.ignored.length === 0 ? "" : ", " + report.ignored.length + " ignored";
     }
 
     private static renderCount(value: number, label: string, severity: Severity, color: boolean): string {

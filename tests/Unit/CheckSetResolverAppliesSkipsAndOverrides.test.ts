@@ -20,8 +20,21 @@ test("addon content type enables ADDON in the marketplace layout and ART/108 run
     assert.equal(CheckSetResolverAppliesSkipsAndOverrides.find(persona, "ART/108").skipped, false);
 });
 
+test("config ignore with the unknown ID FILE/999 is a usage error like an unknown skip", () => {
+    const config = {
+        skips: [],
+        severityOverrides: [],
+        ignores: [{ id: "FILE/999", selector: { group: "FILE", numbers: [999] }, reason: "named by a script" }],
+    };
+
+    assert.throws(
+        () => CheckSetResolverAppliesSkipsAndOverrides.resolve("addon", "standard", config, [], []),
+        /Unknown check ID: FILE\/999/
+    );
+});
+
 test("config skip FILE/401 and --skip MANIFEST each record their own skip reason", () => {
-    const config = { skips: [{ selector: { group: "FILE", numbers: [401] }, reason: "legacy paths" }], severityOverrides: [] };
+    const config = { skips: [{ selector: { group: "FILE", numbers: [401] }, reason: "legacy paths" }], severityOverrides: [], ignores: [] };
     const resolved = CheckSetResolverAppliesSkipsAndOverrides.resolve("addon", "standard", config, [{ group: "MANIFEST" }], []);
 
     assert.equal(CheckSetResolverAppliesSkipsAndOverrides.find(resolved, "FILE/401").skipReason, "skipped by config: legacy paths");
@@ -30,7 +43,7 @@ test("config skip FILE/401 and --skip MANIFEST each record their own skip reason
 });
 
 test("command line override on FILE/201 takes priority over the config FILE group override that still applies to FILE/401", () => {
-    const config = { skips: [], severityOverrides: [{ target: "FILE", severity: "warning" as const }] };
+    const config = { skips: [], severityOverrides: [{ target: "FILE", severity: "warning" as const }], ignores: [] };
     const resolved = CheckSetResolverAppliesSkipsAndOverrides.resolve(
         "addon",
         "standard",

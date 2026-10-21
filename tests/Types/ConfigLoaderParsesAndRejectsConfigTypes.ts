@@ -3,3 +3,10 @@ export interface ConfigCase {
     readonly value: unknown;
     readonly valid: boolean;
 }
+
+export interface ResolvedConfigPaths {
+    readonly input?: string;
+    readonly output?: string;
+    readonly expectedInput: string;
+    readonly expectedOutput: string;
+}

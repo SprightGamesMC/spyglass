@@ -17,6 +17,7 @@ for (const entry of ArgumentParserParsesSelectorsAndOptions.SKIP_CASES) {
 
 test("world with every option set parses each option into its field", () => {
     const options = ArgumentParserParsesSelectorsAndOptions.parse([
+        "check",
         "world",
         "--input",
         "./w",
@@ -32,6 +33,7 @@ test("world with every option set parses each option into its field", () => {
         "--no-color",
     ]);
 
+    assert.equal(options.command, "check");
     assert.equal(options.contentType, "world");
     assert.equal(options.input, "./w");
     assert.equal(options.layout, "marketplace");
@@ -42,19 +44,31 @@ test("world with every option set parses each option into its field", () => {
     assert.equal(options.noColor, true);
 });
 
-test("addon with no options gets input ., layout standard, format text, and verbosity normal", () => {
-    const options = ArgumentParserParsesSelectorsAndOptions.parse(["addon"]);
+test("check addon with no options leaves every setting undefined so the config or the default can give it", () => {
+    const options = ArgumentParserParsesSelectorsAndOptions.parse(["check", "addon"]);
 
-    assert.equal(options.input, ".");
-    assert.equal(options.layout, "standard");
-    assert.equal(options.format, "text");
-    assert.equal(options.verbosity, "normal");
+    assert.equal(options.input, undefined);
+    assert.equal(options.layout, undefined);
+    assert.equal(options.format, undefined);
+    assert.equal(options.verbosity, undefined);
+    assert.equal(options.noColor, undefined);
     assert.equal(options.failOn, undefined);
 });
 
+test("check alone has no content type and no arguments at all has no command", () => {
+    assert.equal(ArgumentParserParsesSelectorsAndOptions.parse(["check"]).contentType, undefined);
+    assert.equal(ArgumentParserParsesSelectorsAndOptions.parse([]).command, undefined);
+});
+
 test("content type mod, option --unknown, --input without a value, and --severity without =level are usage errors", () => {
-    assert.equal(ArgumentParserParsesSelectorsAndOptions.parseThrows(["mod"]), true);
-    assert.equal(ArgumentParserParsesSelectorsAndOptions.parseThrows(["addon", "--unknown"]), true);
-    assert.equal(ArgumentParserParsesSelectorsAndOptions.parseThrows(["addon", "--input"]), true);
-    assert.equal(ArgumentParserParsesSelectorsAndOptions.parseThrows(["addon", "--severity", "DEFINITION/601"]), true);
+    assert.equal(ArgumentParserParsesSelectorsAndOptions.parseThrows(["check", "mod"]), true);
+    assert.equal(ArgumentParserParsesSelectorsAndOptions.parseThrows(["check", "addon", "--unknown"]), true);
+    assert.equal(ArgumentParserParsesSelectorsAndOptions.parseThrows(["check", "addon", "--input"]), true);
+    assert.equal(ArgumentParserParsesSelectorsAndOptions.parseThrows(["check", "addon", "--severity", "DEFINITION/601"]), true);
+});
+
+test("command run, content type addon without check, and a third argument after check addon are usage errors", () => {
+    assert.equal(ArgumentParserParsesSelectorsAndOptions.parseThrows(["run"]), true);
+    assert.equal(ArgumentParserParsesSelectorsAndOptions.parseThrows(["addon"]), true);
+    assert.equal(ArgumentParserParsesSelectorsAndOptions.parseThrows(["check", "addon", "world"]), true);
 });

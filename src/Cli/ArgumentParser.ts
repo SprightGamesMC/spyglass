@@ -1,28 +1,29 @@
 import type { ContentType, Layout, Severity } from "../Types/CheckTypes.js";
-import type { CliOptions, SeverityOverride, SkipSelector } from "../Types/CliTypes.js";
+import type { CliOptions, Command, SeverityOverride, SkipSelector } from "../Types/CliTypes.js";
 import type { FailOn, ReportFormat, Verbosity } from "../Types/ReportTypes.js";
 import UsageError from "../Errors/UsageError.js";
 
 export default abstract class ArgumentParser {
+    static readonly COMMANDS: readonly Command[] = ["check"];
     static readonly CONTENT_TYPES: readonly ContentType[] = ["addon", "world", "skin", "texture", "persona"];
     static readonly FAIL_ON_LEVELS: readonly FailOn[] = ["error", "warning", "recommendation", "none"];
-    private static readonly LAYOUTS: readonly Layout[] = ["standard", "marketplace"];
+    static readonly LAYOUTS: readonly Layout[] = ["standard", "marketplace"];
+    static readonly FORMATS: readonly ReportFormat[] = ["text", "json", "csv"];
+    static readonly VERBOSITIES: readonly Verbosity[] = ["silent", "summary", "normal", "verbose", "debug"];
     private static readonly SEVERITIES: readonly Severity[] = ["error", "warning", "recommendation"];
-    private static readonly FORMATS: readonly ReportFormat[] = ["text", "json", "csv"];
-    private static readonly VERBOSITIES: readonly Verbosity[] = ["silent", "summary", "normal", "verbose", "debug"];
 
     static parse(argv: readonly string[]): CliOptions {
-        let contentType: ContentType | undefined;
-        let input = ".";
-        let layout: Layout = "standard";
+        const positionals: string[] = [];
+        let input: string | undefined;
+        let layout: Layout | undefined;
         const skips: SkipSelector[] = [];
         let configPath: string | undefined;
         let failOn: FailOn | undefined;
         const severityOverrides: SeverityOverride[] = [];
         let output: string | undefined;
-        let format: ReportFormat = "text";
-        let verbosity: Verbosity = "normal";
-        let noColor = false;
+        let format: ReportFormat | undefined;
+        let verbosity: Verbosity | undefined;
+        let noColor: boolean | undefined;
         let listRules = false;
         let help = false;
         let version = false;
@@ -88,13 +89,16 @@ export default abstract class ArgumentParser {
                     version = true;
                     break;
                 default:
-                    contentType = ArgumentParser.parsePositional(argument, contentType);
+                    positionals.push(ArgumentParser.parsePositional(argument));
             }
 
             index += 1;
         }
 
+        const [command, contentType] = ArgumentParser.parseCommand(positionals);
+
         return {
+            command,
             contentType,
             input,
             layout,
@@ -172,16 +176,32 @@ export default abstract class ArgumentParser {
         return [argument.slice(0, equals), argument.slice(equals + 1)];
     }
 
-    private static parsePositional(argument: string, existing: ContentType | undefined): ContentType {
+    private static parsePositional(argument: string): string {
         if (argument.startsWith("-")) {
             throw new UsageError("Unknown option: " + argument);
         }
 
-        if (existing !== undefined) {
-            throw new UsageError("Unexpected argument: " + argument);
+        return argument;
+    }
+
+    private static parseCommand(positionals: readonly string[]): [Command | undefined, ContentType | undefined] {
+        const [first, second, third] = positionals;
+
+        if (first === undefined) {
+            return [undefined, undefined];
         }
 
-        return ArgumentParser.oneOf(argument, ArgumentParser.CONTENT_TYPES, "content type");
+        if (ArgumentParser.CONTENT_TYPES.some((contentType) => contentType === first)) {
+            throw new UsageError("Content type " + first + " must follow the check command: spyglass check " + first);
+        }
+
+        if (third !== undefined) {
+            throw new UsageError("Unexpected argument: " + third);
+        }
+
+        const command = ArgumentParser.oneOf(first, ArgumentParser.COMMANDS, "command");
+
+        return [command, second === undefined ? undefined : ArgumentParser.oneOf(second, ArgumentParser.CONTENT_TYPES, "content type")];
     }
 
     private static oneOf<T extends string>(value: string, allowed: readonly T[], name: string): T {

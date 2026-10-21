@@ -1,0 +1,159 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Spyglass config file",
+    "description": "Settings for spyglass check. Command line options override these values.",
+    "type": "object",
+    "additionalProperties": false,
+    "definitions": {
+        "selector": {
+            "type": "string",
+            "pattern": "^[A-Z]+(/(\\d+-\\d+|\\d+( *, *\\d+)*))?$",
+            "description": "GROUP, GROUP/N, GROUP/N,N, or GROUP/N-M."
+        },
+        "pattern": {
+            "type": "string",
+            "description": "Path relative to the input with / between folders. * matches any characters except /, ** matches any characters including /, ? matches one character except /."
+        }
+    },
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "description": "Location of this schema."
+        },
+        "contentType": {
+            "enum": [
+                "addon",
+                "world",
+                "skin",
+                "texture",
+                "persona"
+            ],
+            "description": "Content type to validate. The content type after check overrides it."
+        },
+        "input": {
+            "type": "string",
+            "description": "Folder or packaged file to validate, relative to the folder of this config file.",
+            "default": "."
+        },
+        "layout": {
+            "enum": [
+                "standard",
+                "marketplace"
+            ],
+            "description": "standard accepts any folder structure. marketplace adds the MARKETPLACE and ART groups for a Marketplace submission zip.",
+            "default": "standard"
+        },
+        "output": {
+            "type": "string",
+            "description": "Folder for the report file, relative to the folder of this config file. Without it the report goes to stdout."
+        },
+        "format": {
+            "enum": [
+                "text",
+                "json",
+                "csv"
+            ],
+            "description": "Report format.",
+            "default": "text"
+        },
+        "verbosity": {
+            "enum": [
+                "silent",
+                "summary",
+                "normal",
+                "verbose",
+                "debug"
+            ],
+            "description": "Amount of output on stderr and in the text report on stdout.",
+            "default": "normal"
+        },
+        "noColor": {
+            "type": "boolean",
+            "description": "Disable colors on stdout and stderr.",
+            "default": false
+        },
+        "skip": {
+            "type": "array",
+            "description": "Checks to remove. Combined with --skip.",
+            "items": {
+                "oneOf": [
+                    {
+                        "$ref": "#/definitions/selector"
+                    },
+                    {
+                        "type": "object",
+                        "required": [
+                            "id"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                            "id": {
+                                "$ref": "#/definitions/selector"
+                            },
+                            "reason": {
+                                "type": "string",
+                                "description": "Shown by --list-rules."
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "severity": {
+            "type": "object",
+            "description": "Severity of a check or a group. Combined with --severity.",
+            "propertyNames": {
+                "pattern": "^[A-Z]+(/\\d+)?$"
+            },
+            "additionalProperties": {
+                "enum": [
+                    "error",
+                    "warning",
+                    "recommendation"
+                ]
+            }
+        },
+        "ignore": {
+            "type": "array",
+            "description": "Findings to remove. The checks still run.",
+            "items": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "reason"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "id": {
+                        "$ref": "#/definitions/selector"
+                    },
+                    "reason": {
+                        "type": "string",
+                        "pattern": "\\S",
+                        "description": "Why the findings are ignored."
+                    },
+                    "path": {
+                        "$ref": "#/definitions/pattern"
+                    },
+                    "pack": {
+                        "$ref": "#/definitions/pattern"
+                    },
+                    "field": {
+                        "type": "string",
+                        "description": "Exact field path of the finding."
+                    }
+                }
+            }
+        },
+        "failOn": {
+            "enum": [
+                "error",
+                "warning",
+                "recommendation",
+                "none"
+            ],
+            "description": "Lowest severity that makes the exit code 1.",
+            "default": "error"
+        }
+    }
+}
