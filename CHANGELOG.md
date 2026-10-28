@@ -2,6 +2,20 @@
 
 All notable changes to Spyglass. Format follows Keep a Changelog. Versions follow Semantic Versioning as described in [Contributing](docs/contributing.md#versioning-and-releases).
 
+## [0.4.0]
+
+### Changed
+
+- Vanilla data built from samples tag `v1.26.60.5`. The new vanilla textures are all under `textures/ui`, so TEXTUREPACK counts do not change.
+- MANIFEST/201 accepts the optional multiselect setting field `selection_text` and reports it when it is not a string.
+- ADDON/703 treats `editor-allowlist` as world impacting.
+- Reviewed format version constants, schemas, script modules, and Marketplace limits against `v1.26.60.5`. No constant changed.
+
+### Fixed
+
+- A behavior pack `sounds/sound_definitions.json` contains server sound definitions, not the resource pack catalog. SOUND/201 and ADDON/210 no longer report it.
+- SCRIPT/201 and CHUNK/201 no longer report the built in `packstack` and `editor-allowlist` commands as unknown.
+
 ## [0.3.0]
 
 ### Added

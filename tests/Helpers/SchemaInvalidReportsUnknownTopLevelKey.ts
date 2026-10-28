@@ -50,6 +50,18 @@ export default abstract class SchemaInvalidReportsUnknownTopLevelKey {
             expectedPaths: ["BP/manifest.json"],
         },
         {
+            name: "multiselect selection_text string matches the schema",
+            files: ManifestFixture.behaviorWithSettings([{ ...ManifestFixture.MULTISELECT, selection_text: "Choose modes" }]),
+            expectedIds: [],
+            expectedPaths: [],
+        },
+        {
+            name: "multiselect selection_text number is not the string the schema expects",
+            files: ManifestFixture.behaviorWithSettings([{ ...ManifestFixture.MULTISELECT, selection_text: 5 }]),
+            expectedIds: ["MANIFEST/201"],
+            expectedPaths: ["BP/manifest.json"],
+        },
+        {
             name: "unparseable manifest text is a file error not a schema error",
             files: { "BP/manifest.json": "{ not json" },
             expectedIds: [],

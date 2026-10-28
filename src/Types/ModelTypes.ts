@@ -68,6 +68,7 @@ export type ItemKind =
     | "flipbook_textures"
     | "texture_list"
     | "sound_definitions"
+    | "server_sound_definitions"
     | "sounds_json"
     | "music_definitions"
     | "sound"

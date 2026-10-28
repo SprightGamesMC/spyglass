@@ -1,6 +1,6 @@
 # SOUND
 
-The `sound_definitions.json` file inside a resource pack, which maps sound event names to audio files.
+The `sound_definitions.json` file inside a resource pack, which maps sound event names to audio files. The file of the same name in a behavior pack contains server sound definitions in a different format and is not checked by this group.
 
 Runs for: addon, world, texture.
 

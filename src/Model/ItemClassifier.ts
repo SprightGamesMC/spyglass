@@ -12,6 +12,7 @@ export default abstract class ItemClassifier {
     private static readonly SCRIPT_EXTENSIONS: readonly string[] = ["js", "ts", "mjs"];
     private static readonly TEXTURE_LIST_PREFIXES: readonly string[] = ["texture_list", "textures_list"];
     private static readonly UI_TEXTURE_FOLDER = TextureFormat.TEXTURE_FOLDER + "ui/";
+    private static readonly SOUND_DEFINITIONS_PATH = "sounds/sound_definitions.json";
     private static readonly ROOT_NAMES: Readonly<Record<string, ItemKind>> = {
         "contents.json": "contents_json",
         "signatures.json": "signatures_json",
@@ -118,6 +119,10 @@ export default abstract class ItemClassifier {
 
         if (packType === PackItemLoader.WORLD_TEMPLATE_PACK_TYPE) {
             return ItemClassifier.classifyWorldFile(name, extension);
+        }
+
+        if (packType === PackItemLoader.BEHAVIOR_PACK_TYPE && lowerPath === ItemClassifier.SOUND_DEFINITIONS_PATH) {
+            return "server_sound_definitions";
         }
 
         const catalogKind = ItemClassifier.classifyCatalog(lowerPath, name);
@@ -252,7 +257,7 @@ export default abstract class ItemClassifier {
             return "ui";
         }
 
-        if (lowerPath === "sounds/sound_definitions.json") {
+        if (lowerPath === ItemClassifier.SOUND_DEFINITIONS_PATH) {
             return "sound_definitions";
         }
 

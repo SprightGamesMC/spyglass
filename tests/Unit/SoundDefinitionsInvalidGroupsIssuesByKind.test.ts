@@ -5,7 +5,7 @@ import SoundDefinitionsInvalidGroupsIssuesByKind from "../Helpers/SoundDefinitio
 
 for (const entry of SoundDefinitionsInvalidGroupsIssuesByKind.CASES) {
     test(SoundDefinitionsInvalidGroupsIssuesByKind.ID + " " + entry.name, async () => {
-        const findings = await SoundDefinitionsInvalidGroupsIssuesByKind.run(entry.content);
+        const findings = await SoundDefinitionsInvalidGroupsIssuesByKind.run(entry.content, entry.path);
 
         assert.deepEqual(ModelFixture.fields(findings), [...entry.expectedFields]);
 

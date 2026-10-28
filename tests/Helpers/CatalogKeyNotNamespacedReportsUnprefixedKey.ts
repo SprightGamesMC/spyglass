@@ -24,6 +24,12 @@ export default abstract class CatalogKeyNotNamespacedReportsUnprefixedKey {
             expectedFields: [],
         },
         {
+            name: "behavior pack server sound definitions file is not a catalog",
+            path: AddonFixture.BP + "sounds/sound_definitions.json",
+            content: { "minecraft:server_sound_definitions": [{ sound_event_name: "spright_cave:drip" }] },
+            expectedFields: [],
+        },
+        {
             name: "terrain texture key stone has no namespace",
             path: AddonFixture.RP + "textures/terrain_texture.json",
             content: { texture_data: { stone: {}, "spright_cave:ore": {} } },

@@ -6,6 +6,7 @@ import ModelFixture from "./Core/ModelFixture.js";
 export default abstract class SoundDefinitionsInvalidGroupsIssuesByKind {
     static readonly ID = "SOUND/201";
     static readonly PATH = "RP/sounds/sound_definitions.json";
+    static readonly SERVER_PATH = "BP/sounds/sound_definitions.json";
     static readonly CASES: readonly SoundDefinitionsCase[] = [
         {
             name: "format_version 1.14.0 catalog with typed sound entries matches the schema",
@@ -46,10 +47,20 @@ export default abstract class SoundDefinitionsInvalidGroupsIssuesByKind {
             expectedFields: ["mob.thing.say.sounds"],
         },
         { name: "unparseable catalog text is a file error not a schema error", content: "{", expectedFields: [] },
+        {
+            name: "behavior pack server sound definitions file is not checked",
+            path: SoundDefinitionsInvalidGroupsIssuesByKind.SERVER_PATH,
+            content: { "minecraft:server_sound_definitions": [{ sound_event_name: "mob.thing.say" }] },
+            expectedFields: [],
+        },
     ];
 
-    static run(content: object | string): Promise<Finding[]> {
-        const files = { "RP/manifest.json": ModelFixture.resourceManifest(), [SoundDefinitionsInvalidGroupsIssuesByKind.PATH]: content };
+    static run(content: object | string, path: string = SoundDefinitionsInvalidGroupsIssuesByKind.PATH): Promise<Finding[]> {
+        const files = {
+            "RP/manifest.json": ModelFixture.resourceManifest(),
+            "BP/manifest.json": ModelFixture.behaviorManifest(),
+            [path]: content,
+        };
 
         return ModelFixture.findings(new DefinitionsInvalid(), files);
     }
