@@ -31,7 +31,7 @@ Every setting can also go in `spyglass.config.json` in the current folder. Comma
 
 ```json
 {
-    "$schema": "https://unpkg.com/@sprightgames/spyglass@0.3.0/schema/spyglass.config.schema.json",
+    "$schema": "https://unpkg.com/@sprightgames/spyglass@0.4.0/schema/spyglass.config.schema.json",
     "contentType": "addon",
     "input": "build/validate",
     "failOn": "warning"

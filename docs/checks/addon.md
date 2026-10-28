@@ -134,7 +134,7 @@ Fix: add `"pack_scope": "world"` to the `header`.
 
 ## ADDON/210 catalog-key-not-namespaced
 
-A catalog key is not namespaced. A key may use the colon form `creatorshortname_projectshortname:name`, where the part before the colon must be namespaced, or the underscore form `creatorshortname_projectshortname_name`, where the whole key must give at least three underscore tokens with the first two of 2 or more characters. Checked keys are the entries in `sound_definitions.json`, `terrain_texture.json`, and `item_texture.json`, the atlas tiles in `flipbook_textures.json`, and the groups in `crafting_item_catalog.json`.
+A catalog key is not namespaced. A key may use the colon form `creatorshortname_projectshortname:name`, where the part before the colon must be namespaced, or the underscore form `creatorshortname_projectshortname_name`, where the whole key must give at least three underscore tokens with the first two of 2 or more characters. Checked keys are the entries in the resource pack `sound_definitions.json`, `terrain_texture.json`, and `item_texture.json`, the atlas tiles in `flipbook_textures.json`, and the groups in `crafting_item_catalog.json`.
 
 Fix: rename the key to one of the two namespaced forms and update every reference.
 
@@ -251,7 +251,7 @@ Fix: remove the `ui` folder.
 
 ## ADDON/703 world-impacting-command
 
-A command that changes global world state is used in a `.mcfunction` file, a dialogue file, or an animation event list. Blocked commands: `allowlist`, `alwaysday`, `changesetting`, `connect`, `daylock`, `deop`, `difficulty`, `gamemode`, `gamerule`, `gametest`, `help`, `kick`, `list`, `locate`, `op`, `ops`, `permission`, `project`, `reload`, `reloadconfig`, `save`, `script`, `serveridentity`, `setmaxplayers`, `setworldspawn`, `simulationtype`, `stop`, `tickingarea`, `time`, `transfer`, `wsserver`, `whitelist`, `?`.
+A command that changes global world state is used in a `.mcfunction` file, a dialogue file, or an animation event list. Blocked commands: `allowlist`, `alwaysday`, `changesetting`, `connect`, `daylock`, `deop`, `difficulty`, `editor-allowlist`, `gamemode`, `gamerule`, `gametest`, `help`, `kick`, `list`, `locate`, `op`, `ops`, `permission`, `project`, `reload`, `reloadconfig`, `save`, `script`, `serveridentity`, `setmaxplayers`, `setworldspawn`, `simulationtype`, `stop`, `tickingarea`, `time`, `transfer`, `wsserver`, `whitelist`, `?`.
 
 Fix: remove the command, or replace it with one that only affects the addon content.
 
