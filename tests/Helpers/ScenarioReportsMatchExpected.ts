@@ -9,6 +9,7 @@ export default abstract class ScenarioReportsMatchExpected {
     private static readonly TEST_FOLDER = "ScenarioReportsMatchExpected";
     private static readonly EXPECTED_FILE = "expected.json";
     private static readonly ARGUMENTS_FILE = "arguments.json";
+    private static readonly PROJECT_SUFFIX = ".bbmodel";
 
     static list(): ScenarioDefinition[] {
         if (!fs.existsSync(CliRunner.SCENARIOS_ROOT)) {
@@ -25,7 +26,13 @@ export default abstract class ScenarioReportsMatchExpected {
     static compare(scenario: ScenarioDefinition): ScenarioComparison {
         const folder = CliRunner.scenarioPath(scenario.name);
         const inputPath = CliRunner.prepareScenarioInput(scenario.name, ScenarioReportsMatchExpected.TEST_FOLDER);
-        const result = CliRunner.run([...scenario.arguments, "--input", inputPath, "--format", "json"]);
+        const result = CliRunner.run([
+            ...scenario.arguments,
+            "--input",
+            ScenarioReportsMatchExpected.inputOf(inputPath),
+            "--format",
+            "json",
+        ]);
 
         if (result.exitCode !== 0 && result.exitCode !== 1) {
             throw new Error("Scenario " + scenario.name + " exited " + result.exitCode + ": " + result.stderr);
@@ -62,6 +69,12 @@ export default abstract class ScenarioReportsMatchExpected {
         const parsed = JSON.parse(fs.readFileSync(expectedPath, "utf-8")) as Record<string, unknown>;
 
         return typeof parsed.exit_code === "number" ? parsed.exit_code : undefined;
+    }
+
+    private static inputOf(folder: string): string {
+        const names = fs.readdirSync(folder);
+
+        return names.length === 1 && names[0].endsWith(ScenarioReportsMatchExpected.PROJECT_SUFFIX) ? path.join(folder, names[0]) : folder;
     }
 
     private static readArguments(name: string): string[] {

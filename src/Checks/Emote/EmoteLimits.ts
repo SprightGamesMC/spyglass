@@ -28,6 +28,23 @@ export default abstract class EmoteLimits {
         "rightItem",
         "leftItem",
     ];
+    static readonly BONE_PARENTS: ReadonlyMap<string, string> = new Map([
+        ["hip", "root"],
+        ["body", "hip"],
+        ["head", "body"],
+        ["leftArm", "body"],
+        ["leftItem", "leftArm"],
+        ["rightArm", "body"],
+        ["rightItem", "rightArm"],
+        ["leftLeg", "root"],
+        ["rightLeg", "root"],
+    ]);
+    static readonly CHAT_HIGHLIGHT_TOKEN = "&";
+    static readonly CATMULLROM_LERP_MODE = "catmullrom";
+    static readonly FRAMES_PER_SECOND = 24;
+    static readonly FRAME_TIME_TOLERANCE = 0.0005;
+    static readonly SAMPLE_TOLERANCE = 0.001;
+    static readonly MAX_SAMPLED_SECONDS = 3600;
     static readonly MAX_LENGTH_SECONDS = 10;
     static readonly ROOT_Y_MIN = 0;
     static readonly ROOT_Y_MAX = 16;

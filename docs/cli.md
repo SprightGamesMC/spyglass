@@ -31,14 +31,14 @@ The second form takes the content type, the input, and every other setting from 
 
 ### `--input <path>`
 
-Folder or packaged file to validate. Packaged files: `.mcaddon`, `.mctemplate`, `.mcworld`, `.mcpack`, `.mcpersona`, `.zip`. Archives are read in memory.
+Folder or packaged file to validate. Packaged files: `.mcaddon`, `.mctemplate`, `.mcworld`, `.mcpack`, `.mcpersona`, `.zip`. Archives are read in memory. A `.bbmodel` file is an emote project, valid only with the `persona` content type and the `standard` layout.
 
 Default: current folder.
 
 ### `--layout <standard|marketplace>`
 
-- `standard`: any folder structure. Packs are found by `manifest.json` search.
-- `marketplace`: a Marketplace submission zip. Packs are still found by search. Adds the MARKETPLACE and ART groups, which check the fixed folder names and the art files.
+- `standard`: any folder structure. Packs are found by `manifest.json` search. An emote is validated from its `.bbmodel` file, and an exported emote pack is a usage error.
+- `marketplace`: a Marketplace submission zip. Packs are still found by search. Adds the MARKETPLACE and ART groups, which check the fixed folder names and the art files. An emote is validated from its exported pack.
 
 Default: `standard`. See [Layouts](layouts.md).
 

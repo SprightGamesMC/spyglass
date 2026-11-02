@@ -11,7 +11,8 @@ export default abstract class CheckSetResolver {
         layout: Layout,
         config: ConfigFile,
         commandLineSkips: readonly SkipSelector[],
-        commandLineSeverities: readonly SeverityOverride[]
+        commandLineSeverities: readonly SeverityOverride[],
+        isEmoteProject: boolean = false
     ): ResolvedCheck[] {
         for (const skip of [
             ...config.skips.map((entry) => entry.selector),
@@ -25,7 +26,9 @@ export default abstract class CheckSetResolver {
             CheckSetResolver.assertKnownTarget(definitions, override.target);
         }
 
-        const groups = contentType === undefined ? ContentTypeGroups.ALL_GROUPS : ContentTypeGroups.forContentType(contentType, layout);
+        const contentGroups =
+            contentType === undefined ? ContentTypeGroups.ALL_GROUPS : ContentTypeGroups.forContentType(contentType, layout);
+        const groups = isEmoteProject ? ContentTypeGroups.EMOTE_PROJECT_GROUPS : contentGroups;
 
         return definitions.map((definition) =>
             CheckSetResolver.resolveOne(definition, contentType, groups, config, commandLineSkips, commandLineSeverities)

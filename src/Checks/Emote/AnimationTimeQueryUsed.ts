@@ -25,7 +25,7 @@ export default class AnimationTimeQueryUsed extends Check {
             }
 
             const result = await context.loaders.json.read(path);
-            const text = result.text ?? "";
+            const text = (result.text ?? "").toLowerCase();
             const query = EmoteLimits.ANIMATION_TIME_QUERIES.find((candidate) => text.includes(candidate));
 
             if (query === undefined) {

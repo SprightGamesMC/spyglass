@@ -19,6 +19,10 @@ export default abstract class LoopEnabledReportsLoopTrue {
         },
     ];
 
+    static severity(): string {
+        return new LoopEnabled().definition.severity;
+    }
+
     static run(entry: LoopEnabledReportsLoopTrueCase): Promise<Finding[]> {
         return PersonaFixture.run(new LoopEnabled(), entry.files, entry.contentType ?? "persona");
     }

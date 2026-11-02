@@ -16,7 +16,10 @@ export default class AnimationTooLong extends Check {
     };
 
     private static lengthField(animation: JsonObject): string {
-        return typeof animation.animation_length === "number" ? ".animation_length" : ".bones";
+        const declared = animation.animation_length;
+        const last = EmoteAnimationLoader.lastKeyframeTime(animation);
+
+        return typeof declared === "number" && (last === undefined || declared >= last) ? ".animation_length" : ".bones";
     }
 
     async run(context: CheckContext): Promise<Finding[]> {
@@ -30,7 +33,7 @@ export default class AnimationTooLong extends Check {
             }
 
             for (const [name, animation] of file.animations) {
-                const length = EmoteAnimationLoader.length(animation);
+                const length = EmoteAnimationLoader.animationEnd(animation);
 
                 if (length === undefined || length <= EmoteLimits.MAX_LENGTH_SECONDS) {
                     continue;

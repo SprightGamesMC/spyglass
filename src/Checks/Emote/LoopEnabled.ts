@@ -9,7 +9,7 @@ export default class LoopEnabled extends Check {
         group: EmoteChecks.GROUP,
         number: EmoteChecks.LOOP_ENABLED,
         slug: "loop-enabled",
-        severity: "warning",
+        severity: "error",
         description: "Animation has a loop key set to true",
     };
 

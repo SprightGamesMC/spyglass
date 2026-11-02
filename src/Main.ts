@@ -21,11 +21,14 @@ import VersionFetcher from "./Cli/VersionFetcher.js";
 import ToolError from "./Errors/ToolError.js";
 import UsageError from "./Errors/UsageError.js";
 import Loaders from "./Loaders/Loaders.js";
+import PersonaLoader from "./Loaders/PersonaLoader.js";
 import ModelBuilder from "./Model/ModelBuilder.js";
+import EmoteProjectStorage from "./Storage/EmoteProjectStorage.js";
+import PathUtilities from "./Storage/PathUtilities.js";
 import StorageFactory from "./Storage/StorageFactory.js";
 
 export default abstract class Main {
-    static readonly TOOL_VERSION = "0.4.0";
+    static readonly TOOL_VERSION = "0.5.0";
     private static readonly DEFAULT_VERBOSITY: Verbosity = "normal";
     private static readonly FINDINGS_HIDDEN_VERBOSITIES: readonly Verbosity[] = ["silent", "summary"];
     private static readonly MILLISECONDS_SUFFIX = /\.\d{3}Z$/;
@@ -111,7 +114,8 @@ export default abstract class Main {
             settings.layout,
             config,
             options.skips,
-            options.severityOverrides
+            options.severityOverrides,
+            EmoteProjectStorage.isProjectPath(settings.input)
         );
 
         if (options.listRules) {
@@ -157,6 +161,12 @@ export default abstract class Main {
     ): Promise<Report> {
         const inputPath = path.resolve(workingDirectory, settings.input);
 
+        const isEmoteProject = EmoteProjectStorage.isProjectPath(inputPath);
+
+        if (isEmoteProject && (contentType !== "persona" || settings.layout !== "standard")) {
+            throw new UsageError("A .bbmodel input needs the persona content type and the standard layout");
+        }
+
         logger.verbose("Validating " + inputPath + " as " + contentType + " with " + settings.layout + " layout");
 
         const storage = await StorageFactory.open(inputPath);
@@ -172,13 +182,25 @@ export default abstract class Main {
         const model = await new ModelBuilder(storage, settings.layout, loaders.json).build();
         const context: CheckContext = { model, loaders, contentType };
 
+        if (
+            !isEmoteProject &&
+            contentType === "persona" &&
+            settings.layout === "standard" &&
+            (await PersonaLoader.emotes(context)).length > 0
+        ) {
+            throw new UsageError(
+                "The standard layout validates an emote from its .bbmodel file. Use --layout marketplace for an exported emote"
+            );
+        }
+
         logger.debug(Main.describeModel(model));
 
         const findings = await new CheckRunner(CheckRegistry.all(), resolved).run(context, (entry) => {
             logger.verbose(entry.id + " " + entry.findingCount + " findings " + entry.durationMilliseconds.toFixed(1) + " ms");
         });
 
-        const filtered = FindingFilter.apply(findings, config.ignores, resolved);
+        const located = isEmoteProject ? findings.map((finding) => ({ ...finding, path: PathUtilities.fileName(inputPath) })) : findings;
+        const filtered = FindingFilter.apply(located, config.ignores, resolved);
 
         Main.logIgnores(filtered, logger);
 

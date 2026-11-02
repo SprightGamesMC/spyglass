@@ -4,8 +4,8 @@
   "layout": "standard",
   "passed": false,
   "counts": {
-    "error": 3,
-    "warning": 2,
+    "error": 5,
+    "warning": 3,
     "recommendation": 0
   },
   "findings": [
@@ -13,7 +13,7 @@
       "id": "EMOTE/204",
       "slug": "bone-not-allowed",
       "severity": "error",
-      "path": "em_sample_wave.animation.json",
+      "path": "em_sample_wave.bbmodel",
       "pack": "",
       "location": {
         "field": "animations.animation.em_sample_wave.bones.tail"
@@ -23,14 +23,28 @@
       "id": "EMOTE/210",
       "slug": "chat-message-no-player-token",
       "severity": "warning",
-      "path": "texts/en_US.lang",
+      "path": "em_sample_wave.bbmodel",
+      "pack": ""
+    },
+    {
+      "id": "EMOTE/213",
+      "slug": "chat-highlight-invalid",
+      "severity": "warning",
+      "path": "em_sample_wave.bbmodel",
+      "pack": ""
+    },
+    {
+      "id": "EMOTE/213",
+      "slug": "chat-highlight-invalid",
+      "severity": "warning",
+      "path": "em_sample_wave.bbmodel",
       "pack": ""
     },
     {
       "id": "EMOTE/401",
       "slug": "animation-too-long",
       "severity": "error",
-      "path": "em_sample_wave.animation.json",
+      "path": "em_sample_wave.bbmodel",
       "pack": "",
       "location": {
         "field": "animations.animation.em_sample_wave.animation_length"
@@ -40,7 +54,17 @@
       "id": "EMOTE/402",
       "slug": "root-movement-over-limit",
       "severity": "error",
-      "path": "em_sample_wave.animation.json",
+      "path": "em_sample_wave.bbmodel",
+      "pack": "",
+      "location": {
+        "field": "animations.animation.em_sample_wave.bones.root.position.4.833333"
+      }
+    },
+    {
+      "id": "EMOTE/402",
+      "slug": "root-movement-over-limit",
+      "severity": "error",
+      "path": "em_sample_wave.bbmodel",
       "pack": "",
       "location": {
         "field": "animations.animation.em_sample_wave.bones.root.position.6"
@@ -49,8 +73,8 @@
     {
       "id": "EMOTE/701",
       "slug": "loop-enabled",
-      "severity": "warning",
-      "path": "em_sample_wave.animation.json",
+      "severity": "error",
+      "path": "em_sample_wave.bbmodel",
       "pack": "",
       "location": {
         "field": "animations.animation.em_sample_wave.loop"
