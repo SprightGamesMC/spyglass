@@ -13,6 +13,26 @@ export default abstract class AnimationTooLongReportsOverTenSeconds {
             expectedIds: ["EMOTE/401"],
         },
         {
+            name: "last keyframe at 11 seconds after animation_length 2 is above the 10 second limit",
+            files: PersonaFixture.emoteFiles({
+                animation: PersonaFixture.emoteAnimation({
+                    length: 2,
+                    bones: { head: { rotation: { "0.0": [0, 0, 0], "11.0": [0, 0, 0] } } },
+                }),
+            }),
+            expectedIds: ["EMOTE/401"],
+        },
+        {
+            name: "last keyframe at 3 seconds after animation_length 2 is within the 10 second limit",
+            files: PersonaFixture.emoteFiles({
+                animation: PersonaFixture.emoteAnimation({
+                    length: 2,
+                    bones: { head: { rotation: { "0.0": [0, 0, 0], "3.0": [0, 0, 0] } } },
+                }),
+            }),
+            expectedIds: [],
+        },
+        {
             name: "last keyframe at 11 seconds without animation_length is above the 10 second limit",
             files: PersonaFixture.emoteFiles({
                 animation: {

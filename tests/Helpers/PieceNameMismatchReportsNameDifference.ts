@@ -17,6 +17,17 @@ export default abstract class PieceNameMismatchReportsNameDifference {
             expectedIds: ["PERSONA/203"],
             expectedPaths: [PersonaFixture.metaPath("other_name")],
         },
+        {
+            name: "emote meta file named after piece_name matches",
+            files: PersonaFixture.emoteFiles({}),
+            expectedIds: [],
+        },
+        {
+            name: "emote meta file other_name.meta.json differs from piece_name em_spright_wave",
+            files: PersonaFixture.emoteFiles({ metaName: "other_name" }),
+            expectedIds: ["PERSONA/203"],
+            expectedPaths: [PersonaFixture.metaPath("other_name")],
+        },
     ];
 
     static run(entry: PieceNameMismatchReportsNameDifferenceCase): Promise<FindingSummary> {

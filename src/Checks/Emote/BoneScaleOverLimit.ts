@@ -1,10 +1,11 @@
 import type { CheckContext, CheckDefinition, Finding } from "../../Types/CheckTypes.js";
-import type { EmoteKeyframe } from "../../Types/PersonaTypes.js";
+import type { EmoteSample } from "../../Types/PersonaTypes.js";
 import EmoteAnimationLoader from "../../Loaders/EmoteAnimationLoader.js";
 import PersonaLoader from "../../Loaders/PersonaLoader.js";
 import Check from "../Check.js";
 import EmoteChecks from "./EmoteChecks.js";
 import EmoteLimits from "./EmoteLimits.js";
+import EmoteSampler from "./EmoteSampler.js";
 
 export default class BoneScaleOverLimit extends Check {
     readonly definition: CheckDefinition = {
@@ -15,22 +16,23 @@ export default class BoneScaleOverLimit extends Check {
         description: "Bone scale is outside 0.85 to 1.15 or not uniform",
     };
 
-    private static problem(keyframe: EmoteKeyframe): string | undefined {
-        for (const scale of [keyframe.pre, keyframe.post]) {
-            if (scale === undefined) {
-                continue;
-            }
+    private static problem(sample: EmoteSample): string | undefined {
+        const scale = sample.value;
+        const tolerance = EmoteSampler.tolerance(sample);
 
-            if (scale.some((component) => component !== scale[0])) {
-                return "scale " + EmoteAnimationLoader.formatVector(scale) + " is not uniform";
-            }
-
-            if (scale[0] < EmoteLimits.SCALE_MIN || scale[0] > EmoteLimits.SCALE_MAX) {
-                return "scale " + scale[0] + " is outside " + EmoteLimits.SCALE_MIN + " to " + EmoteLimits.SCALE_MAX;
-            }
+        if (sample.isKeyframe && scale.some((component) => component !== scale[0])) {
+            return "scale " + EmoteAnimationLoader.formatVector(scale) + " is not uniform";
         }
 
-        return undefined;
+        const outside = scale.find(
+            (component) => component < EmoteLimits.SCALE_MIN - tolerance || component > EmoteLimits.SCALE_MAX + tolerance
+        );
+
+        if (outside === undefined) {
+            return undefined;
+        }
+
+        return "scale " + EmoteSampler.rounded(outside) + " is outside " + EmoteLimits.SCALE_MIN + " to " + EmoteLimits.SCALE_MAX;
     }
 
     async run(context: CheckContext): Promise<Finding[]> {
@@ -45,16 +47,14 @@ export default class BoneScaleOverLimit extends Check {
 
             for (const [name, animation] of file.animations) {
                 for (const [bone, definition] of EmoteAnimationLoader.bones(animation)) {
-                    for (const keyframe of EmoteAnimationLoader.keyframes(definition, "scale")) {
-                        const problem = BoneScaleOverLimit.problem(keyframe);
+                    const keyframes = EmoteAnimationLoader.keyframes(definition, "scale");
 
-                        if (problem === undefined) {
-                            continue;
-                        }
+                    for (const failure of EmoteSampler.firstFailures(keyframes, BoneScaleOverLimit.problem)) {
+                        const time = EmoteSampler.rounded(failure.time);
 
                         findings.push(
-                            this.finding("Bone " + bone + " at " + keyframe.time + " seconds: " + problem, file.path, data.pack.root, {
-                                field: "animations." + name + ".bones." + bone + ".scale." + keyframe.time,
+                            this.finding("Bone " + bone + " at " + time + " seconds: " + failure.problem, file.path, data.pack.root, {
+                                field: "animations." + name + ".bones." + bone + ".scale." + time,
                             })
                         );
                     }

@@ -39,6 +39,8 @@ export default abstract class ContentTypeGroups {
 
     static readonly PERSONA_GROUPS: readonly CheckGroup[] = ["FILE", "PACK", "MANIFEST", "LANG", "PERSONA", "EMOTE"];
 
+    static readonly EMOTE_PROJECT_GROUPS: readonly CheckGroup[] = ["EMOTE"];
+
     static readonly MARKETPLACE_GROUPS: readonly CheckGroup[] = ["MARKETPLACE", "ART"];
 
     static readonly ALL_GROUPS: readonly CheckGroup[] = [

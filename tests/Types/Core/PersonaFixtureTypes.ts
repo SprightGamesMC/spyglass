@@ -36,5 +36,6 @@ export interface PersonaCase {
     readonly files: FixtureFiles;
     readonly expectedIds: readonly string[];
     readonly expectedPaths?: readonly string[];
+    readonly expectedFields?: readonly string[];
     readonly contentType?: ContentType;
 }

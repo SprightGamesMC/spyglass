@@ -9,6 +9,10 @@ for (const entry of RootMovementOverLimitReportsOutOfRangePosition.CASES) {
 
         assert.deepEqual(ModelFixture.ids(findings), entry.expectedIds);
 
+        if (entry.expectedFields !== undefined) {
+            assert.deepEqual(ModelFixture.fields(findings), entry.expectedFields);
+        }
+
         if (entry.expectedPaths !== undefined) {
             assert.deepEqual(ModelFixture.paths(findings), entry.expectedPaths);
         }

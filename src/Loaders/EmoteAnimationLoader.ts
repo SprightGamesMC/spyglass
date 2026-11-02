@@ -8,6 +8,7 @@ import PersonaLoader from "./PersonaLoader.js";
 export default abstract class EmoteAnimationLoader {
     static readonly CHANNELS: readonly EmoteChannel[] = ["rotation", "position", "scale"];
     private static readonly VECTOR_LENGTH = 3;
+    private static readonly NUMERIC_STRING_PATTERN = /^\s*[+-]?(\d+\.?\d*|\.\d+)([eE][+-]?\d+)?\s*$/;
     private static readonly CACHE_KEY_PREFIX = "emote-animation:";
 
     static load(context: CheckContext, data: PersonaPackData): Promise<EmoteAnimationFile | undefined> {
@@ -57,14 +58,9 @@ export default abstract class EmoteAnimationLoader {
 
     static keyframes(bone: JsonObject, channel: EmoteChannel): EmoteKeyframe[] {
         const value = bone[channel];
-        const constant = EmoteAnimationLoader.vector(value);
-
-        if (constant !== undefined) {
-            return [{ time: 0, pre: constant, post: constant }];
-        }
 
         if (!JsonLoader.isObject(value)) {
-            return [];
+            return EmoteAnimationLoader.isVectorForm(value) ? [EmoteAnimationLoader.keyframe(0, value)] : [];
         }
 
         const keyframes: EmoteKeyframe[] = [];
@@ -82,53 +78,22 @@ export default abstract class EmoteAnimationLoader {
         return keyframes.sort((left, right) => left.time - right.time);
     }
 
-    static length(animation: JsonObject): number | undefined {
+    static isKeyframed(bone: JsonObject, channel: EmoteChannel): boolean {
+        return JsonLoader.isObject(bone[channel]);
+    }
+
+    static animationEnd(animation: JsonObject): number | undefined {
         const declared = animation.animation_length;
+        const last = EmoteAnimationLoader.lastKeyframeTime(animation);
 
-        if (typeof declared === "number") {
-            return declared;
+        if (typeof declared !== "number") {
+            return last;
         }
 
-        return EmoteAnimationLoader.lastKeyframeTime(animation);
+        return last === undefined ? declared : Math.max(declared, last);
     }
 
-    static startValue(keyframes: readonly EmoteKeyframe[]): readonly number[] | undefined {
-        const first = keyframes[0];
-
-        return first === undefined ? undefined : (first.post ?? first.pre);
-    }
-
-    static endValue(keyframes: readonly EmoteKeyframe[]): readonly number[] | undefined {
-        const last = keyframes[keyframes.length - 1];
-
-        return last === undefined ? undefined : (last.pre ?? last.post);
-    }
-
-    static formatVector(vector: readonly number[]): string {
-        return vector.join(" ");
-    }
-
-    static equals(left: readonly number[], right: readonly number[]): boolean {
-        return left.length === right.length && left.every((component, index) => component === right[index]);
-    }
-
-    private static vector(value: JsonValue | undefined): number[] | undefined {
-        if (typeof value === "number") {
-            return [value, value, value];
-        }
-
-        if (!JsonLoader.isArray(value) || value.length !== EmoteAnimationLoader.VECTOR_LENGTH) {
-            return undefined;
-        }
-
-        if (!value.every((component) => typeof component === "number")) {
-            return undefined;
-        }
-
-        return value as number[];
-    }
-
-    private static lastKeyframeTime(animation: JsonObject): number | undefined {
+    static lastKeyframeTime(animation: JsonObject): number | undefined {
         let last: number | undefined;
 
         for (const bone of EmoteAnimationLoader.bones(animation).values()) {
@@ -142,17 +107,90 @@ export default abstract class EmoteAnimationLoader {
         return last;
     }
 
-    private static keyframe(time: number, entry: JsonValue): EmoteKeyframe {
-        const constant = EmoteAnimationLoader.vector(entry);
+    static startValue(keyframes: readonly EmoteKeyframe[]): readonly number[] | undefined {
+        return keyframes[0] === undefined ? undefined : EmoteAnimationLoader.outgoingValue(keyframes[0]);
+    }
 
-        if (constant !== undefined) {
-            return { time, pre: constant, post: constant };
+    static endValue(keyframes: readonly EmoteKeyframe[]): readonly number[] | undefined {
+        const last = keyframes[keyframes.length - 1];
+
+        return last === undefined ? undefined : EmoteAnimationLoader.incomingValue(last);
+    }
+
+    static outgoingValue(keyframe: EmoteKeyframe): readonly number[] | undefined {
+        return keyframe.hasNonNumericValue ? undefined : (keyframe.post ?? keyframe.pre);
+    }
+
+    static incomingValue(keyframe: EmoteKeyframe): readonly number[] | undefined {
+        return keyframe.hasNonNumericValue ? undefined : (keyframe.pre ?? keyframe.post);
+    }
+
+    static formatVector(vector: readonly number[]): string {
+        return vector.join(" ");
+    }
+
+    static equals(left: readonly number[], right: readonly number[]): boolean {
+        return left.length === right.length && left.every((component, index) => component === right[index]);
+    }
+
+    private static vector(value: JsonValue | undefined): number[] | undefined {
+        if (typeof value === "number" || typeof value === "string") {
+            const component = EmoteAnimationLoader.component(value);
+
+            return component === undefined ? undefined : [component, component, component];
         }
+
+        if (!JsonLoader.isArray(value) || value.length !== EmoteAnimationLoader.VECTOR_LENGTH) {
+            return undefined;
+        }
+
+        const components = value.map((component) => EmoteAnimationLoader.component(component));
+
+        return components.every((component) => component !== undefined) ? (components as number[]) : undefined;
+    }
+
+    private static component(value: JsonValue): number | undefined {
+        if (typeof value === "number") {
+            return value;
+        }
+
+        if (typeof value !== "string" || !EmoteAnimationLoader.NUMERIC_STRING_PATTERN.test(value)) {
+            return undefined;
+        }
+
+        const parsed = Number(value);
+
+        return Number.isFinite(parsed) ? parsed : undefined;
+    }
+
+    private static isVectorForm(value: JsonValue | undefined): boolean {
+        if (typeof value === "number" || typeof value === "string") {
+            return true;
+        }
+
+        return JsonLoader.isArray(value) && value.length === EmoteAnimationLoader.VECTOR_LENGTH;
+    }
+
+    private static isNonNumeric(value: JsonValue | undefined): boolean {
+        return EmoteAnimationLoader.isVectorForm(value) && EmoteAnimationLoader.vector(value) === undefined;
+    }
+
+    private static keyframe(time: number, entry: JsonValue): EmoteKeyframe {
+        if (!JsonLoader.isObject(entry)) {
+            const value = EmoteAnimationLoader.vector(entry);
+
+            return { time, pre: value, post: value, hasNonNumericValue: EmoteAnimationLoader.isNonNumeric(entry) };
+        }
+
+        const pre = JsonLoader.get(entry, "pre");
+        const post = JsonLoader.get(entry, "post");
 
         return {
             time,
-            pre: EmoteAnimationLoader.vector(JsonLoader.get(entry, "pre")),
-            post: EmoteAnimationLoader.vector(JsonLoader.get(entry, "post")),
+            pre: EmoteAnimationLoader.vector(pre),
+            post: EmoteAnimationLoader.vector(post),
+            lerpMode: PersonaLoader.string(entry, "lerp_mode"),
+            hasNonNumericValue: EmoteAnimationLoader.isNonNumeric(pre) || EmoteAnimationLoader.isNonNumeric(post),
         };
     }
 

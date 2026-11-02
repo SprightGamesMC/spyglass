@@ -9,12 +9,12 @@ import EmoteLimits from "./EmoteLimits.js";
 export default abstract class PoseNotNeutralCheck extends Check {
     protected abstract readonly edge: EmoteEdge;
 
-    private static neutral(bone: string, channel: EmoteChannel): readonly number[] | undefined {
+    private static neutral(channel: EmoteChannel): readonly number[] {
         switch (channel) {
             case "rotation":
                 return EmoteLimits.NEUTRAL_ROTATION;
             case "position":
-                return bone === EmoteLimits.ROOT_BONE ? EmoteLimits.NEUTRAL_POSITION : undefined;
+                return EmoteLimits.NEUTRAL_POSITION;
             case "scale":
                 return EmoteLimits.NEUTRAL_SCALE;
         }
@@ -43,11 +43,11 @@ export default abstract class PoseNotNeutralCheck extends Check {
 
         for (const [bone, definition] of EmoteAnimationLoader.bones(animation)) {
             for (const channel of EmoteAnimationLoader.CHANNELS) {
-                const neutral = PoseNotNeutralCheck.neutral(bone, channel);
+                const neutral = PoseNotNeutralCheck.neutral(channel);
                 const keyframes = EmoteAnimationLoader.keyframes(definition, channel);
                 const value = this.edgeValue(keyframes);
 
-                if (neutral === undefined || value === undefined || EmoteAnimationLoader.equals(value, neutral)) {
+                if (value === undefined || EmoteAnimationLoader.equals(value, neutral)) {
                     continue;
                 }
 

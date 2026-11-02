@@ -26,9 +26,16 @@ export default abstract class StartPoseNotNeutralReportsNonNeutralFirstKeyframe 
             expectedIds: ["EMOTE/207"],
         },
         {
-            name: "head position of 4 on Y on the first keyframe is allowed because only root position is checked",
+            name: "head position of 4 on Y on the first keyframe is not a neutral start pose",
             files: PersonaFixture.emoteFiles({
                 animation: PersonaFixture.emoteAnimation({ bones: { head: { position: { "0.0": [0, 4, 0], "2.0": [0, 0, 0] } } } }),
+            }),
+            expectedIds: ["EMOTE/207"],
+        },
+        {
+            name: "head position of 0 on the first keyframe is a neutral start pose",
+            files: PersonaFixture.emoteFiles({
+                animation: PersonaFixture.emoteAnimation({ bones: { head: { position: { "0.0": [0, 0, 0], "2.0": [0, 0, 0] } } } }),
             }),
             expectedIds: [],
         },

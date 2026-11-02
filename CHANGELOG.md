@@ -2,6 +2,22 @@
 
 All notable changes to Spyglass. Format follows Keep a Changelog. Versions follow Semantic Versioning as described in [Contributing](docs/contributing.md#versioning-and-releases).
 
+## [0.5.0]
+
+### Added
+
+- EMOTE/105 edge-keyframe-missing, EMOTE/211 limited-channel-value-not-numeric, EMOTE/212 channel-value-not-numeric, EMOTE/213 chat-highlight-invalid, EMOTE/214 keyframe-not-on-frame, EMOTE/215 animation-length-not-on-frame, EMOTE/404 root-landing-offset, and EMOTE/702 scaled-child-of-scaled-parent.
+
+### Changed
+
+- EMOTE/701 severity is now error. This is a breaking change.
+- The standard layout validates an emote from its `.bbmodel` file, with the EMOTE group only. The marketplace layout validates the exported pack. An exported emote pack under the standard layout is now a usage error. This is a breaking change.
+- EMOTE/402 and EMOTE/403 also test values sampled at every 1/24 second between keyframes, with linear and catmullrom interpolation. EMOTE/402 reports the first failing time for each segment.
+- EMOTE/207 and EMOTE/208 test position on every bone, not only on root.
+- EMOTE/401 uses the larger of `animation_length` and the last keyframe time.
+- EMOTE/206 ignores case.
+- Emote checks read a numeric string such as `"1.5"` as a number.
+
 ## [0.4.0]
 
 ### Changed

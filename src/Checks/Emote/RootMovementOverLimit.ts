@@ -1,10 +1,11 @@
 import type { CheckContext, CheckDefinition, Finding } from "../../Types/CheckTypes.js";
-import type { EmoteKeyframe } from "../../Types/PersonaTypes.js";
+import type { EmoteSample } from "../../Types/PersonaTypes.js";
 import EmoteAnimationLoader from "../../Loaders/EmoteAnimationLoader.js";
 import PersonaLoader from "../../Loaders/PersonaLoader.js";
 import Check from "../Check.js";
 import EmoteChecks from "./EmoteChecks.js";
 import EmoteLimits from "./EmoteLimits.js";
+import EmoteSampler from "./EmoteSampler.js";
 
 export default class RootMovementOverLimit extends Check {
     readonly definition: CheckDefinition = {
@@ -15,31 +16,20 @@ export default class RootMovementOverLimit extends Check {
         description: "Root moves above 16 on Y, below 0 on Y, or beyond plus or minus 4 on X or Z",
     };
 
-    private static problem(keyframe: EmoteKeyframe): string | undefined {
-        for (const position of [keyframe.pre, keyframe.post]) {
-            const problem = position === undefined ? undefined : RootMovementOverLimit.describe(position);
+    private static problem(sample: EmoteSample): string | undefined {
+        const [x, y, z] = sample.value;
+        const tolerance = EmoteSampler.tolerance(sample);
 
-            if (problem !== undefined) {
-                return problem;
-            }
+        if (y < EmoteLimits.ROOT_Y_MIN - tolerance || y > EmoteLimits.ROOT_Y_MAX + tolerance) {
+            return "Y " + EmoteSampler.rounded(y) + " is outside " + EmoteLimits.ROOT_Y_MIN + " to " + EmoteLimits.ROOT_Y_MAX;
         }
 
-        return undefined;
-    }
-
-    private static describe(position: readonly number[]): string | undefined {
-        const [x, y, z] = position;
-
-        if (y < EmoteLimits.ROOT_Y_MIN || y > EmoteLimits.ROOT_Y_MAX) {
-            return "Y " + y + " is outside " + EmoteLimits.ROOT_Y_MIN + " to " + EmoteLimits.ROOT_Y_MAX;
+        if (Math.abs(x) > EmoteLimits.ROOT_HORIZONTAL_LIMIT + tolerance) {
+            return "X " + EmoteSampler.rounded(x) + " is beyond plus or minus " + EmoteLimits.ROOT_HORIZONTAL_LIMIT;
         }
 
-        if (Math.abs(x) > EmoteLimits.ROOT_HORIZONTAL_LIMIT) {
-            return "X " + x + " is beyond plus or minus " + EmoteLimits.ROOT_HORIZONTAL_LIMIT;
-        }
-
-        if (Math.abs(z) > EmoteLimits.ROOT_HORIZONTAL_LIMIT) {
-            return "Z " + z + " is beyond plus or minus " + EmoteLimits.ROOT_HORIZONTAL_LIMIT;
+        if (Math.abs(z) > EmoteLimits.ROOT_HORIZONTAL_LIMIT + tolerance) {
+            return "Z " + EmoteSampler.rounded(z) + " is beyond plus or minus " + EmoteLimits.ROOT_HORIZONTAL_LIMIT;
         }
 
         return undefined;
@@ -62,16 +52,14 @@ export default class RootMovementOverLimit extends Check {
                     continue;
                 }
 
-                for (const keyframe of EmoteAnimationLoader.keyframes(root, "position")) {
-                    const problem = RootMovementOverLimit.problem(keyframe);
+                const keyframes = EmoteAnimationLoader.keyframes(root, "position");
 
-                    if (problem === undefined) {
-                        continue;
-                    }
+                for (const failure of EmoteSampler.firstFailures(keyframes, RootMovementOverLimit.problem)) {
+                    const time = EmoteSampler.rounded(failure.time);
 
                     findings.push(
-                        this.finding("Root position at " + keyframe.time + " seconds: " + problem, file.path, data.pack.root, {
-                            field: "animations." + name + ".bones.root.position." + keyframe.time,
+                        this.finding("Root position at " + time + " seconds: " + failure.problem, file.path, data.pack.root, {
+                            field: "animations." + name + ".bones.root.position." + time,
                         })
                     );
                 }

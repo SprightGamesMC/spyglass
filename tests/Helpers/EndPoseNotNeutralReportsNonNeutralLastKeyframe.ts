@@ -15,6 +15,20 @@ export default abstract class EndPoseNotNeutralReportsNonNeutralLastKeyframe {
             expectedIds: ["EMOTE/208"],
         },
         {
+            name: "head position of 4 on Y on the last keyframe ends away from the neutral pose",
+            files: PersonaFixture.emoteFiles({
+                animation: PersonaFixture.emoteAnimation({ bones: { head: { position: { "0.0": [0, 0, 0], "2.0": [0, 4, 0] } } } }),
+            }),
+            expectedIds: ["EMOTE/208"],
+        },
+        {
+            name: "head position of 0 on the last keyframe ends in the neutral pose",
+            files: PersonaFixture.emoteFiles({
+                animation: PersonaFixture.emoteAnimation({ bones: { head: { position: { "0.0": [0, 4, 0], "2.0": [0, 0, 0] } } } }),
+            }),
+            expectedIds: [],
+        },
+        {
             name: "last keyframe with neutral pre value ends in the neutral pose",
             files: PersonaFixture.emoteFiles({
                 animation: PersonaFixture.emoteAnimation({

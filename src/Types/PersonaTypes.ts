@@ -78,4 +78,19 @@ export interface EmoteKeyframe {
     readonly time: number;
     readonly pre?: readonly number[];
     readonly post?: readonly number[];
+    readonly lerpMode?: string;
+    readonly hasNonNumericValue: boolean;
 }
+
+export interface EmoteSample {
+    readonly time: number;
+    readonly value: readonly number[];
+    readonly isKeyframe: boolean;
+}
+
+export interface EmoteSampleFailure {
+    readonly time: number;
+    readonly problem: string;
+}
+
+export type EmoteSampleInspector = (sample: EmoteSample) => string | undefined;

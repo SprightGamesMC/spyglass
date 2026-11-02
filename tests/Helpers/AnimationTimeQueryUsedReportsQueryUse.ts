@@ -19,6 +19,20 @@ export default abstract class AnimationTimeQueryUsedReportsQueryUse {
             expectedIds: ["EMOTE/206"],
         },
         {
+            name: "QUERY.ANIM_TIME in upper case is the same forbidden anim_time query",
+            files: PersonaFixture.emoteFiles({
+                animation: PersonaFixture.emoteAnimation({ bones: { head: { rotation: { "0.0": ["QUERY.ANIM_TIME * 10", 0, 0] } } } }),
+            }),
+            expectedIds: ["EMOTE/206"],
+        },
+        {
+            name: "Q.Anim_Time in mixed case is the short form of the forbidden anim_time query",
+            files: PersonaFixture.emoteFiles({
+                animation: PersonaFixture.emoteAnimation({ bones: { head: { rotation: { "0.0": ["Q.Anim_Time * 10", 0, 0] } } } }),
+            }),
+            expectedIds: ["EMOTE/206"],
+        },
+        {
             name: "q.anim_time in a keyframe is the short form of the forbidden anim_time query",
             files: PersonaFixture.emoteFiles({
                 animation: PersonaFixture.emoteAnimation({ bones: { head: { rotation: { "0.0": ["q.anim_time * 10", 0, 0] } } } }),

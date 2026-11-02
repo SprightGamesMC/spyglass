@@ -2,7 +2,9 @@ import type { Storage } from "../Types/StorageTypes.js";
 import fs from "node:fs";
 import ToolError from "../Errors/ToolError.js";
 import UsageError from "../Errors/UsageError.js";
+import EmoteProjectStorage from "./EmoteProjectStorage.js";
 import FileSystemStorage from "./FileSystemStorage.js";
+import PathUtilities from "./PathUtilities.js";
 import ZipStorage from "./ZipStorage.js";
 
 export default abstract class StorageFactory {
@@ -17,11 +19,23 @@ export default abstract class StorageFactory {
             return new FileSystemStorage(inputPath);
         }
 
+        if (EmoteProjectStorage.isProjectPath(inputPath)) {
+            return new EmoteProjectStorage(await StorageFactory.readProject(inputPath), PathUtilities.fileName(inputPath));
+        }
+
         if (!ZipStorage.isArchivePath(inputPath)) {
             throw new UsageError("Input must be a folder or an archive: " + inputPath);
         }
 
         return StorageFactory.openArchive(inputPath);
+    }
+
+    private static async readProject(inputPath: string): Promise<string> {
+        try {
+            return await fs.promises.readFile(inputPath, "utf-8");
+        } catch (error) {
+            throw new ToolError("Could not read project " + inputPath, error);
+        }
     }
 
     private static async openArchive(inputPath: string): Promise<Storage> {

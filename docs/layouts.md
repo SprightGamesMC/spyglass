@@ -215,27 +215,38 @@ The whole zip is produced by the persona export in Blockbench. Manual packaging 
 
 ## Emote
 
-Standard. Validated with the `persona` content type, with the same pack structure as a persona piece. Module type is still `persona_piece`. The meta `piece_type` is `persona_emote`, and an animation file replaces textures and geometry. `<id>` is lower case letters, digits, underscore, starts with `em_`, and contains a second underscore.
+Validated with the `persona` content type. `<id>` is lower case letters, digits, underscore, starts with `em_`, and contains a second underscore. Only these bones may be animated: `root`, `hip`, `body`, `head`, `rightArm`, `leftArm`, `rightLeg`, `leftLeg`, `rightItem`, `leftItem`.
+
+Standard validates the Blockbench project file. The input is one `.bbmodel` file with `meta.model_format` `bedrock_emote`.
 
 ```
-<input>/
-  manifest.json                 format_version 1, module type persona_piece
-  <id>.meta.json                piece_type persona_emote, animation_sources
-  <id>.animation.json           format_version 1.8.0, key animation.<id>
-  texts/
-    languages.json
-    en_US.lang                  persona.offer.title, persona.emote.chat_message, persona.emote.easter_egg
+spyglass check persona --input <id>.bbmodel
 ```
 
-The animation file name must be `<id>.animation.json`, not `<id>.json`. Only these bones may be animated: `root`, `hip`, `body`, `head`, `rightArm`, `leftArm`, `rightLeg`, `leftLeg`, `rightItem`, `leftItem`.
+Spyglass converts the project in memory to the files the emote export writes, and runs only the EMOTE group. It reads the first animation, as the export does. Findings have the `.bbmodel` file as their path. An exported emote pack under this layout is a usage error.
 
-Marketplace.
+| Project value | Exported as |
+|---|---|
+| `model_identifier` | `piece_name`, with `em_` added when it is absent |
+| `persona_emote_display_name` | `persona.offer.title` |
+| `persona_emote_chat_message` | `persona.emote.chat_message` |
+| `persona_emote_chat_easter_egg` | `persona.emote.easter_egg` |
+| `animations[0]` animators of type `bone` | `bones` in the animation file |
+
+The export removes `loop` and every bone outside the allowed set. The conversion keeps them, so EMOTE/204, EMOTE/205, and EMOTE/701 can report them in the project.
+
+Marketplace validates the exported pack in the submission zip. The `.bbmodel` file in `Marketing Art` is checked only as an art file.
 
 ```
 <id>.zip
   Content/
     persona/
-      same files as standard
+      manifest.json             format_version 1, module type persona_piece
+      <id>.meta.json            piece_type persona_emote, animation_sources
+      <id>.animation.json       format_version 1.8.0, key animation.<id>
+      texts/
+        languages.json
+        en_US.lang              persona.offer.title, persona.emote.chat_message, persona.emote.easter_egg
   Marketing Art/
     <id>.gif
     <id>_SideLoad.mcpack
@@ -244,7 +255,7 @@ Marketplace.
     <id>_thumbnail_0.png
 ```
 
-Produced by the emote export in Blockbench. No approval sheet and one GIF, since emotes have no body size variants.
+Produced by the emote export in Blockbench. No approval sheet and one GIF, since emotes have no body size variants. The animation file name must be `<id>.animation.json`, not `<id>.json`.
 
 ## Art
 
@@ -276,5 +287,5 @@ Each content type is also packaged as a file the game opens directly. Spyglass a
 | world | `.mcworld` | an exported world, same root contents as `.mctemplate` |
 | skin | `.mcpack` | skin pack files at root |
 | texture | `.mcpack` | resource pack files at root |
-| persona | `.mcpersona` | piece or emote files at root |
+| persona | `.mcpersona` | piece files at root. An emote is validated from its `.bbmodel` file or its submission zip, see [Emote](#emote) |
 | any | `.zip` | the same root contents as the game file for that content type, or a Marketplace submission with `--layout marketplace` |
